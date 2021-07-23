@@ -1,24 +1,71 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import Home from '../views/Home.vue';
 
 const routes = [
+  /** 前台頁面 */
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    component: () => import('@/views/Front.vue'),
+    children: [
+      // 首頁
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/Front/Index.vue'),
+      },
+      // 好食菜單
+      {
+        path: 'menu',
+        name: 'Menu',
+        component: () => import('@/views/Front/Menu.vue'),
+      },
+      // 好食菜單 (產品詳細資訊)
+      {
+        path: 'product/:productId',
+        name: 'Product',
+        component: () => import('@/views/Front/ProductDetail.vue'),
+      },
+      // 關於我們
+      {
+        path: 'about',
+        name: 'About',
+        component: () => import('@/views/Front/About.vue'),
+      },
+    ],
+  },
+  /** 後台頁面 (含登入) */
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/backend',
+    name: 'BackEnd',
+    component: () => import('@/views/Backend/Backend.vue'),
+    children: [
+      {
+        path: 'products',
+        component: () => import('@/views/Backend/Products.vue'),
+      },
+      {
+        path: 'orders',
+        component: () => import('@/views/Backend/Orders.vue'),
+      },
+      {
+        path: 'coupons',
+        component: () => import('@/views/Backend/Coupons.vue'),
+      },
+    ],
+  },
+  {
+    path: '/backend/:pathMatch(.*)*',
+    redirect: { name: 'BackEnd' },
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
+  linkActiveClass: 'active',
   routes,
 });
 

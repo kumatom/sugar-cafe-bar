@@ -1,0 +1,66 @@
+// 自定義顏色 (color)
+$main-color-1: #c2b188;
+$main-color-2: #524538;
+$second-color-1: #e6d8b0;
+$second-color-2: #41342a;
+$bg-opacity-color-1: #41342af7;
+$bg-opacity-color-2: #e6d8b0e3;
+
+// 自定義 bootstrap
+@import '~bootstrap/scss/functions';
+@import './helper/variables';
+@import '~bootstrap/scss/mixins';
+
+@import '~bootstrap';
+
+// swiper
+@import './helper/swiper/swiper';
+@import './helper/swiper/pagination';
+@import './helper/swiper/navigation';
+
+// 載入自定義樣式
+@import './layout/custom';
+@import './layout/nav';   // 導覽列
+@import './layout/index'; // 首頁
+@import './layout/about'; // 關於我們
+@import './layout/menu';  // 好食菜單
+@import './layout/product'; // 產品詳細資訊
+// @import './layout/vue3-loading-overlay';
+
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital@1&display=swap');
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  color: $main-color-2;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*
+  主要內容區塊
+*/
+.main-container {
+  min-height: 720px;
+  margin-bottom: 30px;
+}
+
+@include media-breakpoint-down(md) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/*
+  scollbar 樣式調整 (chrome)
+*/
+::-webkit-scrollbar {
+  width: 5px;
+  background: $bg-opacity-color-2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $main-color-2;
+}

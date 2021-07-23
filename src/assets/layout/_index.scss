@@ -1,0 +1,35 @@
+/*
+  優惠訊息
+*/
+.message .card {
+  box-shadow: #333 0px 0px 6px;
+}
+
+#message-list {
+  .list-group-item {
+    // background-color: transparent;
+    // color: #fff;
+    border-color: $main-color-1;
+    border-bottom-width: 1px;
+    line-height: 2;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  #message-list {
+    margin-top: 2rem;
+  }
+}
+
+/*
+  首頁區塊 (section)
+*/
+.index-content {
+  margin-bottom: 2rem;
+
+  h3 {
+    letter-spacing: 0.25rem;
+  }
+}
