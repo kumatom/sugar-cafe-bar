@@ -24,11 +24,25 @@ const routes = [
         name: 'Product',
         component: () => import('@/views/Front/ProductDetail.vue'),
       },
+      // 建立訂單 (結帳)
+      {
+        path: 'order',
+        name: 'Order',
+        component: () => import('@/views/Front/Order.vue'),
+      },
       // 關於我們
       {
         path: 'about',
         name: 'About',
         component: () => import('@/views/Front/About.vue'),
+      },
+      {
+        path: '/product/:pathMatch(.*)*',
+        component: () => import('@/views/Front/NotFoundProduct.vue'),
+      },
+      {
+        path: '/:pathMatch(.*)*',
+        component: () => import('@/views/Front/NotFound.vue'),
       },
     ],
   },
@@ -67,6 +81,12 @@ const router = createRouter({
   history: createWebHashHistory(),
   linkActiveClass: 'active',
   routes,
+  scrollBehavior() {
+    return {
+      top: 0,
+      behavior: 'smooth',
+    };
+  },
 });
 
 export default router;

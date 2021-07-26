@@ -25,6 +25,7 @@ $bg-opacity-color-2: #e6d8b0e3;
 @import './layout/about'; // 關於我們
 @import './layout/menu';  // 好食菜單
 @import './layout/product'; // 產品詳細資訊
+@import './layout/notFound';
 // @import './layout/vue3-loading-overlay';
 
 @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
@@ -33,6 +34,7 @@ $bg-opacity-color-2: #e6d8b0e3;
 body {
   font-family: 'Josefin Sans', sans-serif;
   color: $main-color-2;
+  // background: #eee;
 }
 
 a {

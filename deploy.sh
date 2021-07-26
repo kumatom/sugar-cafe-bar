@@ -17,6 +17,6 @@ git add -A
 git commit -m 'deploy'
 
 # 部署到 https://<USERNAME>.github.io
-git push -f https://github.com/kumatom/sugar-cafe-bar.git main:gh-pages
+git push -f https://github.com/kumatom/sugar-cafe-bar.git master
 
 cd -

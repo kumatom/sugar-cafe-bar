@@ -15,6 +15,10 @@
 .scb-nav-title {
   font-size: 1.5rem;
   font-family: 'Lobster', cursive;
+  /* 裝置尺寸小於320px，隱藏LOGO名稱 */
+  @media (max-width:320px) {
+    display: none;
+  }
 }
 
 .close-btn {
@@ -29,6 +33,10 @@
   }
   h1 {
     letter-spacing: 0.75rem;
+    a {
+      color: $main-color-2;
+      text-decoration: underline;
+    }
   }
 }
 
@@ -37,7 +45,7 @@
 }
 
 .fun-bar {
-  a {
+  #cart-link {
     display: block;
     font-size: 1.5rem;
     padding: 0.3rem 0.7rem;
@@ -60,7 +68,24 @@
       text-align: center;
       top: 8px;
       right: 15px;
+      animation: cartTips 1.2s infinite;
     }
+  }
+}
+
+@keyframes cartTips {
+  0% {
+    top: 8px;
+  }
+  50% {
+    top: 4px;
+    transform: scale(1.1);
+  }
+  80% {
+    top: 8px;
+  }
+  100% {
+    top: 8px;
   }
 }
 
@@ -73,121 +98,100 @@
 /*
   nav 設定
 */
-.nav-link {
-  &.active {
-    border-bottom: 3px $bg-opacity-color-1 solid;
-    color: $bg-opacity-color-1 !important;
-    font-weight: bold;
-    padding-bottom: 0;
-    transition: border-bottom ease-out 0.3s;
+#navbarNav {
+  .nav-link {
+    &.active {
+      border-bottom: 3px $bg-opacity-color-1 solid;
+      color: $bg-opacity-color-1 !important;
+      font-weight: bold;
+      padding-bottom: 0;
+      transition: border-bottom ease-out 0.3s;
+    }
   }
 }
 
+
+/*
+  訂餐清單
+*/
 .cart-wrapper {
-  &:not(.show) {
-    right: -1000px;
-    position: fixed;
-    animation: hideCartWrapper;
-    animation-duration: 0.3s;
-  }
-  &.show {
-    background: $main-color-1;
-    width: 40%;
-    height: 100vh;
-    z-index: 1090;
-    right: 0;
-    position: fixed;
-    display: block;
-    box-shadow: #333 -1px 0px 15px;
-    transition: right 0.15s linear;
-    animation: showCartWrapper;
-    animation-duration: 0.3s;
-  }
-  .cart-wrapper-header {
-    display: flex;
-    padding-left: 20px;
-    padding-top: 15px;
-    width: 100%;
-    align-items: baseline;
-    i {
-      font-size: 2rem;
-      color: $bg-opacity-color-1;
-      cursor: pointer;
-    }
+  background: $main-color-1;
+  .offcanvas-header {
     h3 {
-      color: $bg-opacity-color-1;
-      letter-spacing: 0.75rem;
-      margin: 0 auto;
+      letter-spacing: 0.25rem;
     }
   }
 
-  .cart-wrapper-container {
-    padding: 20px;
+  .offcanvas-body {
+    padding: 12px;
     .card {
       min-height: 150px;
+      .card-body {
+        padding: 1rem 0.75rem;
+      }
+      .card-title {
+        font-size: 1.2rem;
+      }
     }
-  }
-
-  @include media-breakpoint-down(lg) {
-    &.show {
-      width: 50%;
-    }
-  }
-
-  @include media-breakpoint-down(md) {
-    &.show {
-      width: 100%;
+    .cart-none-content {
+      margin: 0 auto;
+      text-align: center;
     }
   }
 }
 
 /*
-  訂餐列表(購物車) 動畫
+  自製手機版選單 (sm-menu)
 */
-@keyframes showCartWrapper {
-  0% {
-    right: -300px;
-  }
-  100% {
-    right: 0;
-  }
-}
-
-@keyframes hideCartWrapper {
-  0% {
-    right: -150px;
-  }
-  100% {
-    right: -1000px;
-  }
-}
-
-/* mobile navbar sidebar under lg breakpoint */
-@include media-breakpoint-down(lg) {
-  .navbar-collapse.collapsing .navbar-nav {
-    display: block;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: -45%;
-  }
-
-  .navbar-collapse.show .navbar-nav {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    flex-direction: column;
-    height: auto;
-    width: 100%;
-    // transition: left 0.1s ease;
-    background: #cabc9a;
-    padding: 2rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 15%);
-    z-index: 999;
-
-    .nav-item {
+#offcanvas-sm-menu {
+  background: $bg-opacity-color-1;
+  color:$main-color-1;
+  .offcanvas-body {
+    margin-top: 25vh;
+    text-align: center;
+    .nav-link {
+      font-weight: normal;
+      font-size: 1.5rem;
+      padding: 1rem;
       margin-bottom: 1rem;
+      color: $main-color-1;
+      border-radius: 0.5rem;
+      transition: all 0.15s ease-out;
+      &.active,&:hover {
+        background: $bg-opacity-color-2;
+        color: $second-color-2;
+        transition: background 0.3s linear;
+      }
     }
   }
 }
+
+// /* mobile navbar sidebar under lg breakpoint */
+// @include media-breakpoint-down(lg) {
+//   .navbar-collapse.collapsing .navbar-nav {
+//     display: block;
+//     position: fixed;
+//     top: 0;
+//     bottom: 0;
+//     left: -45%;
+//   }
+
+//   .navbar-collapse.show .navbar-nav {
+//     position: fixed;
+//     top: 0;
+//     bottom: 0;
+//     left: 0;
+//     flex-direction: column;
+//     height: auto;
+//     width: 100%;
+//     // transition: left 0.1s ease;
+//     background: #cabc9a;
+//     padding: 2rem;
+//     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 15%);
+//     z-index: 999;
+
+//     .nav-item {
+//       margin-bottom: 1rem;
+//     }
+//   }
+// }

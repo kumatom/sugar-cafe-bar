@@ -1,6 +1,6 @@
 <template>
   <Loading :active="isLoading" :z-index="1070"></Loading>
-  <div class="container">
+  <div class="container-lg">
     <!-- 優惠訊息 -->
     <section class="message index-content">
       <div class="card">
@@ -53,7 +53,7 @@
         <i class="bi bi-hand-thumbs-up-fill"></i>
         推薦菜單
       </h3>
-      <div class="container">
+      <div class="container-lg">
         <div class="row">
           <!-- 推薦產品清單 -->
           <ProductsCardSwiper :limitCount="3" />
@@ -112,10 +112,6 @@ export default {
     };
   },
   methods: {
-    // 自動置頂
-    autoScrollTop() {
-      document.querySelector('html').scrollTop = 0;
-    },
     // 點選優惠訊息切換
     chageMsgList(number) {
       // 編號不同再執行切換
@@ -137,7 +133,6 @@ export default {
       this.isLoading = false;
       messageImg.classList.add('show');
     }, 500);
-    this.autoScrollTop();
   },
 };
 </script>

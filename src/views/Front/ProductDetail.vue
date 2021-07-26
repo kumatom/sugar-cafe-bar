@@ -22,6 +22,7 @@
                 <button
                   class="btn btn-outline-dark border-0 py-2"
                   type="button"
+                  :disabled="!cart.isDash"
                   @click.prevent="dashNumber"
                 >
                   <i class="bi bi-dash"></i>
@@ -46,9 +47,23 @@
             </div>
           </div>
           <div class="col-6">
-            <button type="button" class="text-nowrap btn btn-dark w-100 py-2">
-              加入訂餐
-              <i class="bi bi-plus-circle"></i>
+            <button
+              type="button"
+              class="text-nowrap btn btn-dark w-100 py-2"
+              :disabled="loadingStatus.loadingItem === product.id"
+              @click.prevent="addCart"
+            >
+              <div
+                class="spinner-border spinner-border-sm"
+                role="status"
+                v-if="loadingStatus.loadingItem === product.id"
+              >
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div :class="{ 'd-none': loadingStatus.loadingItem === product.id }">
+                加入訂餐
+                <i class="bi bi-plus-circle"></i>
+              </div>
             </button>
           </div>
         </div>
@@ -85,6 +100,10 @@ export default {
   data() {
     return {
       isLoading: false,
+      // Loading物件
+      loadingStatus: {
+        loadingItem: '',
+      },
       // API路徑
       baseAPI: `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}`,
       // 產品
@@ -92,10 +111,17 @@ export default {
       productId: '',
       cart: {
         quantity: 1,
+        isDash: false,
       },
       recProduct: {
         name: '',
         category: '',
+      },
+      tips: {
+        data: {
+          success: false,
+          message: '該商品已加入至訂餐清單囉~',
+        },
       },
     };
   },
@@ -104,7 +130,10 @@ export default {
     $route() {
       // 取得產品ID
       this.productId = this.$route.params.productId;
-      this.getProduct();
+      // console.log(this.productId);
+      if (this.productId !== undefined) {
+        this.getProduct();
+      }
     },
   },
   inject: ['emitter', '$httpMessageState'],
@@ -113,9 +142,12 @@ export default {
     chageLoadingStatus(status) {
       this.isLoading = status;
     },
-    // 自動置頂
-    autoScrollTop() {
-      document.querySelector('html').scrollTop = 0;
+    showMsg(status) {
+      if (status) {
+        this.tips.data.success = true;
+        this.tips.data.message = `${this.product.title} 已加入至訂餐清單!`;
+        this.$httpMessageState(this.tips, '加入訂餐清單');
+      }
     },
     // 取得單一產品
     getProduct() {
@@ -136,9 +168,10 @@ export default {
               name: this.product.title,
               category: this.product.category,
             };
-            this.autoScrollTop();
             // console.log(this.product);
           } else {
+            // 查無產品時，導向404
+            this.$router.push('/product');
             // this.$httpMessageState(response, '產品列表');
           }
         })
@@ -146,13 +179,41 @@ export default {
           console.dir(err);
         });
     },
+    // 加入至購物車 (訂餐清單)
+    addCart() {
+      // console.log(this.product.id);
+      this.loadingStatus.loadingItem = this.product.id;
+      const cartItem = {
+        product_id: this.product.id,
+        qty: this.cart.quantity,
+      };
+      const api = `${this.baseAPI}/cart`;
+      this.$http
+        .post(api, { data: cartItem })
+        .then((res) => {
+          if (res.data.success) {
+            this.showMsg(true);
+            this.loadingStatus.loadingItem = '';
+            this.cart.quantity = 1;
+            // 取得訂餐清單
+            this.emitter.emit('get-cart');
+          }
+        })
+        .catch((err) => {
+          this.loadingStatus.loadingItem = '';
+          const errMsg = err.response.data.message;
+          console.dir(errMsg);
+        });
+    },
     dashNumber() {
       if (this.cart.quantity > 1) {
         this.cart.quantity -= 1;
+        this.cart.isDash = this.cart.quantity > 1;
       }
     },
     addNumber() {
       this.cart.quantity += 1;
+      this.cart.isDash = true;
     },
   },
   mounted() {

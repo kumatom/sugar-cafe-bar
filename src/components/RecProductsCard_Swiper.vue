@@ -109,7 +109,7 @@ export default {
                 if (item.category === recStrCategory && item.title !== this.filterProduct.name) {
                   if (this.productCount < this.limitCount) {
                     const tempItem = { ...item };
-                    tempItem.isAddCart = true;
+                    // tempItem.isAddCart = true;
                     this.filterProducts.push(tempItem);
                     this.productCount += 1;
                   }
@@ -118,7 +118,7 @@ export default {
                 // 產品筆數限制
                 if (this.productCount < this.limitCount) {
                   const tempItem = { ...item };
-                  tempItem.isAddCart = true;
+                  // tempItem.isAddCart = true;
                   this.filterProducts.push(tempItem);
                   this.productCount += 1;
                 }

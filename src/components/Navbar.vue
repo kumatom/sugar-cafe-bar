@@ -1,15 +1,6 @@
 <template>
-  <div class="cart-wrapper">
-    <div class="cart-wrapper-header">
-      <i class="bi bi-arrow-right" @click="toggleShowCartWrapper"></i>
-      <h3>訂餐清單 (1)</h3>
-    </div>
-    <div class="cart-wrapper-container">
-      <div class="card"></div>
-    </div>
-  </div>
   <div class="sticky-top" style="background:#c2b188d1 !important;">
-    <div class="container">
+    <div class="container-lg">
       <nav class="navbar px-0 navbar-expand-lg navbar-light">
         <router-link
           to="/"
@@ -20,7 +11,7 @@
           <span class="scb-nav-title text-secondary">Sugar Cafe' Bar</span>
         </router-link>
 
-        <button
+        <!-- <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -30,7 +21,59 @@
           aria-label="Toggle navigation"
         >
           <i class="bi bi-filter-left" style="font-size:2rem;"></i>
+        </button> -->
+        <button
+          class="btn btn-primary d-lg-none"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvas-sm-menu"
+          aria-controls="offcanvas-sm-menu"
+        >
+          <i class="bi bi-list" style="font-size:1.5rem;"></i>
         </button>
+
+        <!-- 自製手機版選單 -->
+        <div
+          class="offcanvas offcanvas-start d-lg-none"
+          tabindex="-1"
+          id="offcanvas-sm-menu"
+          aria-labelledby="offcanvas-sm-menuLabel"
+        >
+          <div class="offcanvas-header">
+            <h3 class="offcanvas-title" id="offcanvas-sm-menuLabel">導覽選單</h3>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  :class="{ active: pageName === navItem.menu.page }"
+                  :to="navItem.menu.url"
+                  data-bs-dismiss="offcanvas"
+                >
+                  {{ navItem.menu.name }}
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  :class="{ active: pageName === navItem.about.page }"
+                  :to="navItem.about.url"
+                  data-bs-dismiss="offcanvas"
+                >
+                  {{ navItem.about.name }}
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 自製手機版選單 END-->
 
         <div class="collapse navbar-collapse custom-header-md-open" id="navbarNav">
           <ul class="navbar-nav">
@@ -48,7 +91,7 @@
               <router-link
                 class="nav-link"
                 :class="{ active: pageName === navItem.menu.page }"
-                to="/menu"
+                :to="navItem.menu.url"
               >
                 {{ navItem.menu.name }}
               </router-link>
@@ -57,7 +100,7 @@
               <router-link
                 class="nav-link"
                 :class="{ active: pageName === navItem.about.page }"
-                to="/about"
+                :to="navItem.about.url"
               >
                 {{ navItem.about.name }}
               </router-link>
@@ -66,10 +109,166 @@
         </div>
         <!-- 購物車按鈕 -->
         <div class="d-flex me-3 fun-bar">
-          <a class="d-block" @click="toggleShowCartWrapper">
+          <a
+            id="cart-link"
+            class="d-block"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#cartListWrapper"
+            aria-controls="cartListWrapper"
+            @click.prevent="getCart"
+          >
             <i class="bi bi-cart-fill"></i>
-            <span class="cart-quantity">1</span>
+            <span class="cart-quantity" v-if="cart?.carts?.length">{{ cart?.carts?.length }}</span>
           </a>
+          <!-- 訂餐清單(cart-warpper) -->
+          <div
+            class="offcanvas offcanvas-end cart-wrapper"
+            tabindex="-1"
+            id="cartListWrapper"
+            aria-labelledby="cartListWrapperLabel"
+          >
+            <div class="offcanvas-header">
+              <h3 id="cartListWrapperLabel">訂餐清單</h3>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div
+              class="offcanvas-body"
+              :class="{ 'd-flex align-items-center': !cart?.carts?.length }"
+            >
+              <div class="cart-none-content" v-if="!cart?.carts?.length">
+                <h2 class="fw-bold mb-3">還沒點餐嗎?</h2>
+                <router-link to="/menu">
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-md"
+                    data-bs-dismiss="offcanvas"
+                  >
+                    立即點餐
+                    <!-- <i class="bi bi-chevron-right"></i> -->
+                  </button>
+                </router-link>
+              </div>
+              <!-- 這裡產生訂餐清單 -->
+              <div class="card mb-3" v-for="cart in cart.carts" :key="cart.id">
+                <div class="row g-0">
+                  <div class="col-4 d-flex align-items-center justify-content-center">
+                    <img class="img-fluid" :src="cart.product.imageUrl" />
+                  </div>
+                  <div class="col-8">
+                    <div class="card-body">
+                      <div
+                        class="spinner-border spinner-border-md text-primary float-end"
+                        role="status"
+                        v-if="loadingStatus.loadingItem === cart.id"
+                      >
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <span class="card-title">
+                        {{ cart.product.title }}
+                      </span>
+                      <p class="card-text">
+                        <span style="letter-spacing:0.25rem;">
+                          小計 : NT${{ $filters.currency(cart.product.price * cart.qty) }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row align-items-center">
+                      <div class="col-4">
+                        <button
+                          type="button"
+                          class="text-nowrap btn btn-secondary w-100"
+                          style="color:#695C4C;"
+                          :disabled="loadingStatus.loadingItem === cart.id"
+                          @click="deleteCart(cart.id)"
+                        >
+                          移除
+                        </button>
+                      </div>
+                      <div class="col-8">
+                        <div class="input-group my-3 bg-light rounded">
+                          <div class="input-group-prepend">
+                            <button
+                              class="btn btn-outline-dark border-0 py-2"
+                              type="button"
+                              :disabled="cart.qty === 1 || loadingStatus.loadingItem === cart.id"
+                              @click="updateCart(cart, -1)"
+                            >
+                              <i class="bi bi-dash"></i>
+                            </button>
+                          </div>
+                          <input
+                            type="text"
+                            class="form-control border-0 text-center my-auto shadow-none bg-light"
+                            placeholder=""
+                            v-model.number="cart.qty"
+                            disabled
+                          />
+                          <div class="input-group-append">
+                            <button
+                              class="btn btn-outline-dark border-0 py-2"
+                              type="button"
+                              :disabled="loadingStatus.loadingItem === cart.id"
+                              @click="updateCart(cart, 1)"
+                            >
+                              <i class="bi bi-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="card"
+              v-if="cart?.carts?.length"
+              style="width: 100%;
+                      background: #524538;
+                      padding:1rem;
+                      border-radius: 0;"
+            >
+              <div class="d-inline-flex justify-content-between mb-2">
+                <span class="text-light"
+                  >金額小計: NT$ {{ $filters.currency(cartAmountTotal) }}</span
+                >
+                <span class="text-light">品項小計: {{ cart?.carts?.length }} 項</span>
+              </div>
+              <router-link to="/order">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100 py-2 mb-2"
+                  style="font-size:1.25rem;"
+                  data-bs-dismiss="offcanvas"
+                >
+                  結帳去
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </router-link>
+
+              <button type="button" class="btn btn-dark text-primary" @click="deleteCart('all')">
+                <div
+                  class="spinner-border spinner-border-sm text-primary"
+                  role="status"
+                  v-if="loadingStatus.loadingItem === 'all'"
+                >
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div :class="{ 'd-none': loadingStatus.loadingItem === 'all' }">
+                  清空訂餐清單
+                  <i class="bi bi-trash"></i>
+                </div>
+              </button>
+            </div>
+          </div>
+          <!-- 訂餐清單(cart-warpper) END -->
         </div>
       </nav>
     </div>
@@ -95,7 +294,12 @@
             <h1>{{ navItem.about.name }}</h1>
           </section>
           <section id="bannerView-product" v-if="pageName === navItem.product.page">
-            <h1>{{ navItem.product.name }}</h1>
+            <h1>
+              <router-link :to="navItem.menu.url">
+                {{ navItem.menu.name }}
+              </router-link>
+              / {{ navItem.product.name }}
+            </h1>
           </section>
         </div>
       </div>
@@ -104,55 +308,148 @@
 </template>
 
 <script>
-let cartWrapper = null;
-
 export default {
   data() {
     return {
-      isShowCartWrapper: false,
+      // API路徑
+      baseAPI: `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}`,
+      // Loading物件
+      loadingStatus: {
+        loadingItem: '',
+      },
       navItem: {
+        index: {
+          url: '/',
+          name: '首頁',
+          page: 'Index',
+        },
         menu: {
+          url: '/menu',
           name: '好食菜單',
           page: 'Menu',
         },
         product: {
-          name: '好食菜單/詳細資訊',
+          url: '/product',
+          name: '詳細資訊',
           page: 'Product',
         },
         about: {
+          url: '/about',
           name: '關於我們',
           page: 'About',
         },
       },
       pageName: '',
+      cart: {},
+      cartAmountTotal: 0,
+      tips: {
+        data: {
+          success: false,
+          message: '糟糕，目前沒有可以更新的餐點哦!',
+        },
+      },
     };
   },
   watch: {
     // 監聽 route 參數變化 (換頁)
     $route() {
+      console.log(this.$route);
       this.chagePage();
     },
+    // 監聽 cart (訂餐清單) 是否有變動 => 金額小計
+    cart() {
+      let tempTotal = 0;
+      this.cart.carts.forEach((cart) => {
+        tempTotal += cart.qty * cart.product.price;
+      });
+      this.cartAmountTotal = tempTotal;
+    },
   },
+  inject: ['emitter', '$httpMessageState'],
   methods: {
     // 切換頁面
     chagePage() {
       this.pageName = this.$route.name;
     },
-    toggleShowCartWrapper() {
-      if (!this.isShowCartWrapper) {
-        cartWrapper.classList.add('show');
-        this.isShowCartWrapper = true;
-      } else {
-        cartWrapper.classList.remove('show');
-        this.isShowCartWrapper = false;
+    // 取得訂餐清單
+    getCart() {
+      const api = `${this.baseAPI}/cart`;
+      this.$http
+        .get(api)
+        .then((res) => {
+          if (res.data.success) {
+            this.cart = res.data.data;
+          }
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
+    },
+    // 更新訂餐清單
+    updateCart(cart, qty) {
+      this.loadingStatus.loadingItem = cart.id;
+      const computeQty = cart.qty + qty;
+      // console.log(computeQty);
+      if (computeQty >= 1) {
+        const cartItem = {
+          product_id: cart.product.id,
+          qty: computeQty,
+        };
+        const api = `${this.baseAPI}/cart/${cart.id}`;
+        this.$http
+          .put(api, { data: cartItem })
+          .then((res) => {
+            // console.log(res);
+            if (res.data.success) {
+              // ...
+            } else {
+              this.$httpMessageState(this.tips, '訂餐清單');
+            }
+            this.loadingStatus.loadingItem = '';
+            // 更新購物車
+            this.getCart();
+          })
+          .catch((err) => {
+            this.loadingStatus.loadingItem = '';
+            const errMsg = err.response.data.message;
+            console.dir(errMsg);
+          });
       }
     },
-  },
-  created() {
-    this.chagePage();
+    // 刪除訂餐清單 (單一/全部)
+    deleteCart(id) {
+      this.loadingStatus.loadingItem = id;
+      let api = `${this.baseAPI}/carts`;
+      if (id !== 'all') {
+        api = `${this.baseAPI}/cart/${id}`;
+      }
+
+      this.$http
+        .delete(api)
+        .then((res) => {
+          if (res.data.success) {
+            // ...
+          } else {
+            this.tips.data.message = '糟糕，目前沒有可刪除的餐點哦!';
+            this.$httpMessageState(this.tips, '訂餐清單');
+          }
+          this.getCart();
+          this.loadingStatus.loadingItem = '';
+        })
+        .catch((err) => {
+          this.loadingStatus.loadingItem = '';
+          const errMsg = err.response.data.message;
+          console.dir(errMsg);
+        });
+    },
   },
   mounted() {
-    cartWrapper = document.querySelector('.cart-wrapper');
+    this.getCart();
+    this.chagePage();
+    // 註冊取得訂餐清單事件
+    this.emitter.on('get-cart', () => {
+      this.getCart();
+    });
   },
 };
 </script>

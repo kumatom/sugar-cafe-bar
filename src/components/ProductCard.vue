@@ -19,13 +19,23 @@
       <span class="price">NT${{ $filters.currency(product.price) }} / {{ product.unit }}</span>
       <hr />
       <div class="d-flex justify-content-end">
-        <button type="button" v-if="product.isAddCart" class="btn btn-primary btn-md disabled">
-          已加入訂餐
-          <i class="bi bi-check-circle-fill"></i>
-        </button>
-        <button type="button" v-else class="btn btn-primary btn-md" @click.prevent="addCart">
-          加入訂餐
-          <i class="bi bi-plus-circle"></i>
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          :disabled="loadingStatus.loadingItem === product.id"
+          @click.prevent="addCart"
+        >
+          <div
+            class="spinner-border spinner-border-sm"
+            role="status"
+            v-if="loadingStatus.loadingItem === product.id"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div :class="{ 'd-none': loadingStatus.loadingItem === product.id }">
+            加入訂餐
+            <i class="bi bi-plus-circle"></i>
+          </div>
         </button>
       </div>
     </div>
@@ -44,6 +54,13 @@ export default {
   },
   data() {
     return {
+      // API路徑
+      baseAPI: `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}`,
+      // Loading物件
+      loadingStatus: {
+        loadingItem: '',
+      },
+      qty: 1,
       tips: {
         data: {
           success: false,
@@ -54,12 +71,37 @@ export default {
   },
   inject: ['emitter', '$httpMessageState'],
   methods: {
+    showMsg(status) {
+      if (status) {
+        this.tips.data.success = true;
+        this.tips.data.message = `${this.product.title} 已加入至訂餐清單!`;
+        this.$httpMessageState(this.tips, '加入訂餐清單');
+      }
+    },
     // 加入至購物車 (訂餐清單)
     addCart() {
       // console.log(this.product.id);
-      this.tips.data.success = true;
-      this.tips.data.message = `${this.product.title} 已加入至訂餐清單!`;
-      this.$httpMessageState(this.tips, '加入訂餐清單');
+      this.loadingStatus.loadingItem = this.product.id;
+      const cartItem = {
+        product_id: this.product.id,
+        qty: this.qty,
+      };
+      const api = `${this.baseAPI}/cart`;
+      this.$http
+        .post(api, { data: cartItem })
+        .then((res) => {
+          if (res.data.success) {
+            this.showMsg(true);
+            this.loadingStatus.loadingItem = '';
+            // 取得訂餐清單
+            this.emitter.emit('get-cart');
+          }
+        })
+        .catch((err) => {
+          this.loadingStatus.loadingItem = '';
+          const errMsg = err.response.data.message;
+          console.dir(errMsg);
+        });
     },
     // 檢視產品詳細資訊
     viewProductDetail(productId) {
