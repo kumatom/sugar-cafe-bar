@@ -1,5 +1,5 @@
 <template>
-  <div class="card product-card">
+  <div v-if="!isHorizon" class="card product-card">
     <div class="product-img">
       <img class="img-fluid" :src="product.imageUrl" height="220" />
       <div class="mask">
@@ -9,11 +9,55 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="d-flex align-items-center justify-content-between">
-        <h5>{{ product.title }}</h5>
-        <span class="badge rounded-pill bg-primary h5">{{ product.category }}</span>
-      </div>
+      <span class="badge rounded-pill bg-primary h5">{{ product.category }}</span>
+      <h5>{{ product.title }}</h5>
       <p class="text-white">{{ product.description }}</p>
+    </div>
+    <div class="card-footer">
+      <span class="price">NT${{ $filters.currency(product.price) }} / {{ product.unit }}</span>
+      <hr />
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          :disabled="loadingStatus.loadingItem === product.id"
+          @click.prevent="addCart"
+        >
+          <div
+            class="spinner-border spinner-border-sm"
+            role="status"
+            v-if="loadingStatus.loadingItem === product.id"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div :class="{ 'd-none': loadingStatus.loadingItem === product.id }">
+            加入訂餐
+            <i class="bi bi-plus-circle"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- 是否水平放式呈現 -->
+  <div v-else class="card mb-3 product-card">
+    <div class="row g-0">
+      <div class="col-5">
+        <div class="product-img">
+          <img class="img-fluid" :src="product.imageUrl" height="220" />
+          <div class="mask">
+            <a @click.prevent="viewProductDetail(product.id)">
+              詳細資訊
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="card-body">
+          <span class="badge rounded-pill bg-primary h5">{{ product.category }}</span>
+          <h5>{{ product.title }}</h5>
+          <!-- <p class="text-white">{{ product.description }}</p> -->
+        </div>
+      </div>
     </div>
     <div class="card-footer">
       <span class="price">NT${{ $filters.currency(product.price) }} / {{ product.unit }}</span>
@@ -49,6 +93,12 @@ export default {
       type: Object,
       default() {
         return {};
+      },
+    },
+    isHorizon: {
+      type: Boolean,
+      default() {
+        return false;
       },
     },
   },

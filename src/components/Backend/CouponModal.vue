@@ -45,12 +45,7 @@
           </div>
           <div class="mb-3">
             <label for="due_date">到期日</label>
-            <input
-              type="date"
-              class="form-control"
-              id="due_date"
-              v-model="due_date"
-            />
+            <input type="date" class="form-control" id="due_date" v-model="due_date" />
           </div>
           <div class="mb-3">
             <label for="price">折扣百分比</label>
@@ -80,14 +75,19 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             關閉
           </button>
           <button
+            v-if="isNew"
+            type="button"
+            class="btn btn-primary text-white"
+            @click="$emit('update-coupon', tempCoupon)"
+          >
+            新增優惠券
+          </button>
+          <button
+            v-else
             type="button"
             class="btn btn-primary text-white"
             @click="$emit('update-coupon', tempCoupon)"
@@ -126,8 +126,7 @@ export default {
     coupon() {
       this.tempCoupon = this.coupon;
       // 將時間格式改為 YYYY-MM-DD
-      const dateAndTime = new Date(this.tempCoupon.due_date * 1000)
-        .toISOString().split('T');
+      const dateAndTime = new Date(this.tempCoupon.due_date * 1000).toISOString().split('T');
       [this.due_date] = dateAndTime;
     },
     due_date() {

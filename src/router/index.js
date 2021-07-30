@@ -54,11 +54,11 @@ const routes = [
   },
   {
     path: '/backend',
-    name: 'BackEnd',
     component: () => import('@/views/Backend/Backend.vue'),
     children: [
       {
-        path: 'products',
+        path: '',
+        name: 'products',
         component: () => import('@/views/Backend/Products.vue'),
       },
       {
@@ -71,10 +71,10 @@ const routes = [
       },
     ],
   },
-  {
-    path: '/backend/:pathMatch(.*)*',
-    redirect: { name: 'BackEnd' },
-  },
+  // {
+  //   path: '/backend/:pathMatch(.*)*',
+  //   redirect: { name: 'BackEnd' },
+  // },
 ];
 
 const router = createRouter({

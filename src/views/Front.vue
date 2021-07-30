@@ -1,14 +1,11 @@
 <template>
+  <Loading :active="isLoading" :z-index="1070"></Loading>
   <Navbar />
   <div class="main-container">
     <router-view></router-view>
   </div>
   <Footer />
 </template>
-
-<style lang="scss">
-@import '@/assets/all';
-</style>
 
 <script>
 import Navbar from '../components/Navbar.vue';
@@ -18,6 +15,22 @@ export default {
   components: {
     Navbar,
     Footer,
+  },
+  inject: ['emitter'],
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  methods: {
+    changeLoadingStatus(status) {
+      this.isLoading = status;
+    },
+  },
+  mounted() {
+    this.emitter.on('change-isLoading', (status) => {
+      this.changeLoadingStatus(status);
+    });
   },
 };
 </script>

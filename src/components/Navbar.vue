@@ -4,7 +4,7 @@
       <nav class="navbar px-0 navbar-expand-lg navbar-light">
         <router-link
           to="/"
-          class="navbar-brand position-absolute"
+          class="navbar-brand position-absolute scb-logo"
           style="left: 50%; transform: translate(-50%, -50%); top: 50%;"
         >
           <img src="https://i.imgur.com/kUYxttR.png" alt="" width="45" class="me-3" />
@@ -23,6 +23,7 @@
           <i class="bi bi-filter-left" style="font-size:2rem;"></i>
         </button> -->
         <button
+          id="navMenuBtn"
           class="btn btn-primary d-lg-none"
           type="button"
           data-bs-toggle="offcanvas"
@@ -75,7 +76,7 @@
         </div>
         <!-- 自製手機版選單 END-->
 
-        <div class="collapse navbar-collapse custom-header-md-open" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="d-inline-block d-lg-none">
               <button
@@ -108,10 +109,10 @@
           </ul>
         </div>
         <!-- 購物車按鈕 -->
-        <div class="d-flex me-3 fun-bar">
+        <div class="d-flex me-3 fun-bar d-none d-md-block">
           <a
-            id="cart-link"
-            class="d-block"
+            id="nav-cart-btn"
+            class="d-block cart-btn"
             data-bs-toggle="offcanvas"
             data-bs-target="#cartListWrapper"
             aria-controls="cartListWrapper"
@@ -120,106 +121,102 @@
             <i class="bi bi-cart-fill"></i>
             <span class="cart-quantity" v-if="cart?.carts?.length">{{ cart?.carts?.length }}</span>
           </a>
-          <!-- 訂餐清單(cart-warpper) -->
+        </div>
+        <!-- 訂餐清單(cart-warpper) -->
+        <div
+          class="offcanvas offcanvas-end cart-wrapper"
+          tabindex="-1"
+          id="cartListWrapper"
+          aria-labelledby="cartListWrapperLabel"
+        >
+          <div class="offcanvas-header">
+            <h3 id="cartListWrapperLabel">訂餐清單</h3>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
           <div
-            class="offcanvas offcanvas-end cart-wrapper"
-            tabindex="-1"
-            id="cartListWrapper"
-            aria-labelledby="cartListWrapperLabel"
+            class="offcanvas-body"
+            :class="{ 'd-flex align-items-center': !cart?.carts?.length }"
           >
-            <div class="offcanvas-header">
-              <h3 id="cartListWrapperLabel">訂餐清單</h3>
-              <button
-                type="button"
-                class="btn-close text-reset"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
+            <div class="cart-none-content" v-if="!cart?.carts?.length">
+              <h2 class="fw-bold mb-3">還沒點餐嗎?</h2>
+              <router-link to="/menu">
+                <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="offcanvas">
+                  立即點餐
+                  <!-- <i class="bi bi-chevron-right"></i> -->
+                </button>
+              </router-link>
             </div>
-            <div
-              class="offcanvas-body"
-              :class="{ 'd-flex align-items-center': !cart?.carts?.length }"
-            >
-              <div class="cart-none-content" v-if="!cart?.carts?.length">
-                <h2 class="fw-bold mb-3">還沒點餐嗎?</h2>
-                <router-link to="/menu">
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-md"
-                    data-bs-dismiss="offcanvas"
-                  >
-                    立即點餐
-                    <!-- <i class="bi bi-chevron-right"></i> -->
-                  </button>
-                </router-link>
-              </div>
-              <!-- 這裡產生訂餐清單 -->
-              <div class="card mb-3" v-for="cart in cart.carts" :key="cart.id">
-                <div class="row g-0">
-                  <div class="col-4 d-flex align-items-center justify-content-center">
-                    <img class="img-fluid" :src="cart.product.imageUrl" />
-                  </div>
-                  <div class="col-8">
-                    <div class="card-body">
-                      <div
-                        class="spinner-border spinner-border-md text-primary float-end"
-                        role="status"
-                        v-if="loadingStatus.loadingItem === cart.id"
-                      >
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                      <span class="card-title">
-                        {{ cart.product.title }}
-                      </span>
-                      <p class="card-text">
-                        <span style="letter-spacing:0.25rem;">
-                          小計 : NT${{ $filters.currency(cart.product.price * cart.qty) }}
-                        </span>
-                      </p>
+            <!-- 這裡產生訂餐清單 -->
+            <div class="card mb-3" v-for="cart in cart.carts" :key="cart.id">
+              <div class="row g-0">
+                <div class="col-4 d-flex align-items-center justify-content-center">
+                  <img class="img-fluid" :src="cart.product.imageUrl" />
+                </div>
+                <div class="col-8">
+                  <div class="card-body">
+                    <div
+                      class="spinner-border spinner-border-md text-primary float-end"
+                      role="status"
+                      v-if="loadingStatus.loadingItem === cart.id"
+                    >
+                      <span class="visually-hidden">Loading...</span>
                     </div>
+                    <span class="card-title">
+                      {{ cart.product.title }}
+                    </span>
+                    <p class="card-text">
+                      <span style="letter-spacing:0.25rem;">
+                        小計 : NT${{ $filters.currency(cart.product.price * cart.qty) }}
+                      </span>
+                    </p>
                   </div>
-                  <div class="card-footer">
-                    <div class="row align-items-center">
-                      <div class="col-4">
-                        <button
-                          type="button"
-                          class="text-nowrap btn btn-secondary w-100"
-                          style="color:#695C4C;"
-                          :disabled="loadingStatus.loadingItem === cart.id"
-                          @click="deleteCart(cart.id)"
-                        >
-                          移除
-                        </button>
-                      </div>
-                      <div class="col-8">
-                        <div class="input-group my-3 bg-light rounded">
-                          <div class="input-group-prepend">
-                            <button
-                              class="btn btn-outline-dark border-0 py-2"
-                              type="button"
-                              :disabled="cart.qty === 1 || loadingStatus.loadingItem === cart.id"
-                              @click="updateCart(cart, -1)"
-                            >
-                              <i class="bi bi-dash"></i>
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            class="form-control border-0 text-center my-auto shadow-none bg-light"
-                            placeholder=""
-                            v-model.number="cart.qty"
-                            disabled
-                          />
-                          <div class="input-group-append">
-                            <button
-                              class="btn btn-outline-dark border-0 py-2"
-                              type="button"
-                              :disabled="loadingStatus.loadingItem === cart.id"
-                              @click="updateCart(cart, 1)"
-                            >
-                              <i class="bi bi-plus"></i>
-                            </button>
-                          </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row align-items-center">
+                    <div class="col-4">
+                      <button
+                        type="button"
+                        class="text-nowrap btn btn-secondary w-100"
+                        style="color:#695C4C;"
+                        :disabled="loadingStatus.loadingItem === cart.id"
+                        @click="deleteCart(cart.id)"
+                      >
+                        移除
+                      </button>
+                    </div>
+                    <div class="col-8">
+                      <div class="input-group my-3 bg-light rounded">
+                        <div class="input-group-prepend">
+                          <button
+                            class="btn btn-outline-dark border-0 py-2"
+                            type="button"
+                            :disabled="cart.qty === 1 || loadingStatus.loadingItem === cart.id"
+                            @click="updateCart(cart, -1)"
+                          >
+                            <i class="bi bi-dash"></i>
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          class="form-control border-0 text-center my-auto shadow-none bg-light"
+                          placeholder=""
+                          v-model.number="cart.qty"
+                          disabled
+                        />
+                        <div class="input-group-append">
+                          <button
+                            class="btn btn-outline-dark border-0 py-2"
+                            type="button"
+                            :disabled="loadingStatus.loadingItem === cart.id"
+                            @click="updateCart(cart, 1)"
+                          >
+                            <i class="bi bi-plus"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -227,49 +224,47 @@
                 </div>
               </div>
             </div>
-            <div
-              class="card"
-              v-if="cart?.carts?.length"
-              style="width: 100%;
+          </div>
+          <div
+            class="card"
+            v-if="cart?.carts?.length"
+            style="width: 100%;
                       background: #524538;
                       padding:1rem;
                       border-radius: 0;"
-            >
-              <div class="d-inline-flex justify-content-between mb-2">
-                <span class="text-light"
-                  >金額小計: NT$ {{ $filters.currency(cartAmountTotal) }}</span
-                >
-                <span class="text-light">品項小計: {{ cart?.carts?.length }} 項</span>
-              </div>
-              <router-link to="/order">
-                <button
-                  type="button"
-                  class="btn btn-primary w-100 py-2 mb-2"
-                  style="font-size:1.25rem;"
-                  data-bs-dismiss="offcanvas"
-                >
-                  結帳去
-                  <i class="bi bi-arrow-right"></i>
-                </button>
-              </router-link>
-
-              <button type="button" class="btn btn-dark text-primary" @click="deleteCart('all')">
-                <div
-                  class="spinner-border spinner-border-sm text-primary"
-                  role="status"
-                  v-if="loadingStatus.loadingItem === 'all'"
-                >
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                <div :class="{ 'd-none': loadingStatus.loadingItem === 'all' }">
-                  清空訂餐清單
-                  <i class="bi bi-trash"></i>
-                </div>
-              </button>
+          >
+            <div class="d-inline-flex justify-content-between mb-2">
+              <span class="text-light">金額小計: NT$ {{ $filters.currency(cartAmountTotal) }}</span>
+              <span class="text-light">品項小計: {{ cart?.carts?.length }} 項</span>
             </div>
+            <router-link to="/order">
+              <button
+                type="button"
+                class="btn btn-primary w-100 py-2 mb-2"
+                style="font-size:1.25rem;"
+                data-bs-dismiss="offcanvas"
+              >
+                結帳去
+                <i class="bi bi-arrow-right"></i>
+              </button>
+            </router-link>
+
+            <button type="button" class="btn btn-dark text-primary" @click="deleteCart('all')">
+              <div
+                class="spinner-border spinner-border-sm text-primary"
+                role="status"
+                v-if="loadingStatus.loadingItem === 'all'"
+              >
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div :class="{ 'd-none': loadingStatus.loadingItem === 'all' }">
+                清空訂餐清單
+                <i class="bi bi-trash"></i>
+              </div>
+            </button>
           </div>
-          <!-- 訂餐清單(cart-warpper) END -->
         </div>
+        <!-- 訂餐清單(cart-warpper) END -->
       </nav>
     </div>
   </div>
@@ -304,6 +299,20 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- 懸浮購物車按鈕 -->
+  <div class="floating-cart-btn d-md-none">
+    <a
+      id="floating-cart-btn"
+      class="d-block cart-btn"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#cartListWrapper"
+      aria-controls="cartListWrapper"
+      @click.prevent="getCart"
+    >
+      <i class="bi bi-cart-fill"></i>
+      <span class="cart-quantity" v-if="cart?.carts?.length">{{ cart?.carts?.length }}</span>
+    </a>
   </div>
 </template>
 
@@ -353,16 +362,12 @@ export default {
   watch: {
     // 監聽 route 參數變化 (換頁)
     $route() {
-      console.log(this.$route);
+      // console.log(this.$route);
       this.chagePage();
     },
     // 監聽 cart (訂餐清單) 是否有變動 => 金額小計
     cart() {
-      let tempTotal = 0;
-      this.cart.carts.forEach((cart) => {
-        tempTotal += cart.qty * cart.product.price;
-      });
-      this.cartAmountTotal = tempTotal;
+      this.totalCartAmount();
     },
   },
   inject: ['emitter', '$httpMessageState'],
@@ -370,6 +375,14 @@ export default {
     // 切換頁面
     chagePage() {
       this.pageName = this.$route.name;
+    },
+    // 總計購物車金額
+    totalCartAmount() {
+      let tempTotal = 0;
+      this.cart.carts.forEach((cart) => {
+        tempTotal += cart.qty * cart.product.price;
+      });
+      this.cartAmountTotal = tempTotal;
     },
     // 取得訂餐清單
     getCart() {
@@ -379,6 +392,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
+            this.totalCartAmount();
           }
         })
         .catch((err) => {

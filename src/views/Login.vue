@@ -1,5 +1,5 @@
 <template>
-  <div class="card shadow-lg card-signin">
+  <div class="card shadow-lg card-signin bg-primary">
     <div class="card-body">
       <div class="row justify-content-center">
         <h1 class="h3 mb-3 font-weight-normal text-white">
@@ -54,8 +54,12 @@
   </div>
 </template>
 
-<style lang='scss'>
-@import '@/assets/all_backend';
+<style lang="scss">
+@import '@/assets/all';
+label {
+  color: $main-color-2;
+}
+
 .form-signin {
   height: auto;
   width: 100%;
@@ -66,7 +70,7 @@
 
 .card-signin {
   opacity: 0.9;
-  background-color: #6d8c6f;
+  // background-color: #6d8c6f;
 }
 
 .Login-body-center {
@@ -78,9 +82,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://i.imgur.com/bXfHBA4.jpg');
-  background-position: 50%;
-  background-size: cover;
+  // background-image: url('https://i.imgur.com/bXfHBA4.jpg');
+  // background-position: 50%;
+  // background-size: cover;
+  background: $main-color-2;
 }
 </style>
 

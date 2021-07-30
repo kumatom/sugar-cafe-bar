@@ -1,15 +1,15 @@
 <template>
-  <Loading :active="isLoading" :z-index="1070"></Loading>
   <section class="menuClass menu-content">
     <div class="container-fluid">
       <div class="row justify-content-center my-auto menu-fun-bar">
         <!-- 菜單類別 -->
         <div
           v-for="category in categoryList"
-          class="text-center"
+          class="text-center d-none d-md-block"
           :class="category.column"
           :key="category.id"
         >
+          <!-- 一般選單 -->
           <div class="menu-fun-bar-item">
             <a
               :class="{ active: currentCategory === category.id }"
@@ -25,6 +25,63 @@
             </a>
           </div>
         </div>
+        <!-- 手機版選單 -->
+        <div class="menu-fun-bar-select d-md-none">
+          <h5 class="text-white">目前選取的菜單</h5>
+          <div class="show-menu-item">
+            <i :class="smallMenu.icon" class="text-primary"></i>
+            <h3 class="d-inline text-primary mx-3">
+              {{ smallMenu.name }} <span>({{ smallMenu.comment }})</span>
+            </h3>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary btm-md float-end"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#smallMenuCategory"
+            aria-controls="smallMenuCategory"
+          >
+            切換菜單
+            <i class="bi bi-arrow-left-right"></i>
+          </button>
+          <div
+            class="offcanvas offcanvas-bottom"
+            tabindex="-1"
+            id="smallMenuCategory"
+            aria-labelledby="smallMenuCategoryLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title text-primary" id="smallMenuCategoryLabel">菜單類別</h5>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body small">
+              <div class="row gx-1 gy-1">
+                <div class="col-6" v-for="category in categoryList" :key="category.id">
+                  <div class="menu-fun-bar-item">
+                    <a
+                      :class="{ active: currentCategory === category.id }"
+                      @click="changeCategory(category.id)"
+                      data-bs-dismiss="offcanvas"
+                    >
+                      <h3>
+                        <i :class="category.icon"></i>
+                        <p>
+                          {{ category.name }}<br />
+                          <span class="comment">{{ category.comment }}</span>
+                        </p>
+                      </h3>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -32,11 +89,18 @@
   <!-- 菜單 -->
   <section class="product menu-content">
     <div class="container-lg">
-      <div class="row gy-3 gx-3">
+      <div class="row gy-2 gx-2">
         <!-- 產品清單 -->
-        <div v-for="product in filterProducts" class="col-6 col-md-4 col-lg-3" :key="product.id">
+        <div
+          v-for="product in filterProducts"
+          class="col-6 col-md-4 col-lg-3 d-none d-md-block"
+          :key="product.id"
+        >
           <ProductCard :product="product"> </ProductCard>
         </div>
+      </div>
+      <div v-for="product in filterProducts" class="d-md-none" :key="product.id">
+        <ProductCard :product="product" :isHorizon="true"> </ProductCard>
       </div>
     </div>
   </section>
@@ -51,9 +115,9 @@ export default {
   components: {
     ProductCard,
   },
+  inject: ['emitter'],
   data() {
     return {
-      isLoading: false,
       // API路徑
       baseAPI: `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}`,
       currentCategory: 0,
@@ -96,20 +160,15 @@ export default {
       ],
       products: [],
       filterProducts: [],
+      // 手機版選單資訊
+      smallMenu: {},
     };
   },
   methods: {
-    // 更改Loading狀態
-    chageLoadingStatus(status) {
-      this.isLoading = status;
-    },
-    // 自動置頂
-    autoScrollTop() {
-      document.querySelector('html').scrollTop = 0;
-    },
     // 切換產品類別
     changeCategory(key) {
       this.currentCategory = key;
+      this.smallMenu = { ...this.categoryList[key] };
       this.getfilterCategoryProducts();
     },
     // 取得對應類別產品
@@ -133,11 +192,11 @@ export default {
     // 取得產品清單
     getProducts() {
       const api = `${this.baseAPI}/products/all`;
-      this.chageLoadingStatus(true);
+      this.emitter.emit('change-isLoading', true);
       this.$http
         .get(api)
         .then((response) => {
-          this.chageLoadingStatus(false);
+          this.emitter.emit('change-isLoading', false);
           if (response.data.success) {
             this.products = response.data.products;
             // 取得(類別) 產品清單
@@ -153,7 +212,7 @@ export default {
   },
   mounted() {
     this.getProducts();
-    this.autoScrollTop();
+    this.changeCategory(0);
   },
 };
 </script>

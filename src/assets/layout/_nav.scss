@@ -15,9 +15,11 @@
 .scb-nav-title {
   font-size: 1.5rem;
   font-family: 'Lobster', cursive;
-  /* 裝置尺寸小於320px，隱藏LOGO名稱 */
-  @media (max-width:320px) {
-    display: none;
+}
+.scb-logo {
+  @media (max-width: 320px) {
+    // display: none;
+    margin-left: 1rem;
   }
 }
 
@@ -44,32 +46,52 @@
   margin-bottom: -80px;
 }
 
-.fun-bar {
-  #cart-link {
-    display: block;
-    font-size: 1.5rem;
-    padding: 0.3rem 0.7rem;
-    color: $main-color-2;
-    cursor: pointer;
-    &:hover {
-      background: $bg-opacity-color-1;
-      color: $bg-opacity-color-2;
-      border-radius: 50%;
-    }
-
+/*
+  懸浮購物車按鈕 (floating-cart-btn)
+*/
+.floating-cart-btn {
+  z-index: 1003;
+  bottom: 30px;
+  right: 20px;
+  position: fixed;
+  .cart-btn {
+    background: $main-color-1;
+    box-shadow: #333 0px 0px 10px;
+    transition: background 0.3s ease-out;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
     .cart-quantity {
-      background: $danger;
-      color: #fff;
-      font-size: 1rem;
-      height: 20px;
-      width: 20px;
-      border-radius: 50%;
-      position: absolute;
-      text-align: center;
-      top: 8px;
-      right: 15px;
-      animation: cartTips 1.2s infinite;
+      right: 0;
+      animation: cartTips-floating 1.2s infinite;
     }
+  }
+}
+
+.cart-btn {
+  display: block;
+  font-size: 1.5rem;
+  padding: 0.3rem 0.7rem;
+  color: $main-color-2;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    background: $bg-opacity-color-1;
+    color: $bg-opacity-color-2;
+    transition: all 0.15s ease-in;
+  }
+
+  .cart-quantity {
+    background: $danger;
+    color: #fff;
+    font-size: 1rem;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    position: absolute;
+    text-align: center;
+    top: 8px;
+    right: 15px;
+    animation: cartTips 1.2s infinite;
   }
 }
 
@@ -86,6 +108,22 @@
   }
   100% {
     top: 8px;
+  }
+}
+
+@keyframes cartTips-floating {
+  0% {
+    top: 4px;
+  }
+  50% {
+    top: 0px;
+    transform: scale(1.1);
+  }
+  80% {
+    top: 4px;
+  }
+  100% {
+    top: 4px;
   }
 }
 
@@ -109,7 +147,6 @@
     }
   }
 }
-
 
 /*
   訂餐清單
@@ -145,7 +182,7 @@
 */
 #offcanvas-sm-menu {
   background: $bg-opacity-color-1;
-  color:$main-color-1;
+  color: $main-color-1;
   .offcanvas-body {
     margin-top: 25vh;
     text-align: center;
@@ -157,7 +194,8 @@
       color: $main-color-1;
       border-radius: 0.5rem;
       transition: all 0.15s ease-out;
-      &.active,&:hover {
+      &.active,
+      &:hover {
         background: $bg-opacity-color-2;
         color: $second-color-2;
         transition: background 0.3s linear;

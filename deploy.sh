@@ -14,9 +14,10 @@ npm run build
 
 git init
 git add -A
-git commit -m 'deploy'
+git commit -m '[第二版] SugarCafeBar - 加入購物車、結帳付款'
 
 # 部署到 https://<USERNAME>.github.io
 git push -f https://github.com/kumatom/sugar-cafe-bar.git master
+# git push -f https://github.com/kumatom/sugar-cafe-bar.git master:gh-pages
 
 cd -

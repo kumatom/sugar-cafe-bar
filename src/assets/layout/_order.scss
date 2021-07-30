@@ -1,0 +1,16 @@
+.order-container {
+  label {
+    color: $main-color-1;;
+  }
+  .card-body {
+    color: $main-color-1;
+    letter-spacing: 0.25rem;
+    @include media-breakpoint-down(lg) {
+      padding: 1rem 0;
+    }
+
+    .order-detail {
+      color: $main-color-2;
+    }
+  }
+}

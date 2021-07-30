@@ -1,5 +1,4 @@
 <template>
-  <Loading :active="isLoading" :z-index="1070"></Loading>
   <div class="container-lg">
     <!-- 優惠訊息 -->
     <section class="message index-content">
@@ -93,7 +92,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       showItem: {
         no: 0,
         imageUrl: '',
@@ -111,6 +109,7 @@ export default {
       ],
     };
   },
+  inject: ['emitter'],
   methods: {
     // 點選優惠訊息切換
     chageMsgList(number) {
@@ -121,16 +120,16 @@ export default {
         setTimeout(() => {
           this.showItem.imageUrl = this.messageList[number].imageUrl;
           messageImg.classList.add('show');
-        }, 150);
+        }, 200);
       }
     },
   },
   mounted() {
     this.showItem.imageUrl = this.messageList[0].imageUrl;
     messageImg = document.querySelector('.message img');
-    this.isLoading = true;
+    this.emitter.emit('change-isLoading', true);
     setTimeout(() => {
-      this.isLoading = false;
+      this.emitter.emit('change-isLoading', false);
       messageImg.classList.add('show');
     }, 500);
   },

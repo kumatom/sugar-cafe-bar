@@ -11,10 +11,6 @@
   </div>
 </template>
 
-<style lang="scss">
-@import '@/assets/all_backend';
-</style>
-
 <script>
 // 導入Navbar
 import Navbar from '@/components/Backend/Navbar.vue';
@@ -39,7 +35,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.isCheck = true;
-            this.$router.push('/backend/products');
+            // this.$router.push('/backend/products');
           } else {
             this.isCheck = false;
             this.alertMsg = '授權無效，請先登入!';

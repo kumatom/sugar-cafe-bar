@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-lg">
     <div class="banner-view-about">
       <div class="row">
         <img class="col-12 col-md-6 img-fluid" src="https://i.imgur.com/RqJZAK5.jpg" />
