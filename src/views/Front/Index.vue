@@ -89,7 +89,6 @@
         <iframe
           data-aos="fade-up"
           data-aos-duration="1500"
-          data-aos-anchor-placement="bottom-bottom"
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14457.318278884872!2d121.510763!3d25.0568165!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2efcde4aaa48f134!2sSugar%20Cafe%20Bar!5e0!3m2!1szh-TW!2stw!4v1626619585230!5m2!1szh-TW!2stw"
           width="600"
           height="450"
