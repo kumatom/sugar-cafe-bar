@@ -109,7 +109,7 @@
           class="col-12 col-md-6 mb-3"
           data-aos="fade-right"
           data-aos-duration="1000"
-          data-aos-anchor-placement="center-center"
+          data-aos-anchor-placement="top-center"
         >
           <h3 class="mb-3">
             <i class="bi bi-megaphone-fill"></i>
@@ -153,7 +153,7 @@
           class="col-12 col-md-6"
           data-aos="fade-up"
           data-aos-duration="1500"
-          data-aos-anchor-placement="center-center"
+          data-aos-anchor-placement="top-center"
         >
           <h3 class="text-center">
             喜歡我們，也幫我們按個讚哦
