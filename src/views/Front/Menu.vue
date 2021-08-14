@@ -51,7 +51,7 @@
             aria-labelledby="smallMenuCategoryLabel"
           >
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title text-primary" id="smallMenuCategoryLabel">菜單類別</h5>
+              <h3 class="offcanvas-title text-primary" id="smallMenuCategoryLabel">菜單類別</h3>
               <button
                 type="button"
                 class="btn-close text-reset"
@@ -60,7 +60,7 @@
               ></button>
             </div>
             <div class="offcanvas-body small">
-              <div class="row gx-1 gy-1">
+              <div class="row gx-1 gy-3">
                 <div class="col-6" v-for="category in categoryList" :key="category.id">
                   <div class="menu-fun-bar-item">
                     <a
@@ -88,19 +88,16 @@
 
   <!-- 菜單 -->
   <section class="product menu-content">
-    <div class="container-lg">
-      <div class="row gy-2 gx-2">
+    <div class="container-fluid">
+      <div class="row justify-content-center gy-3 gx-3">
         <!-- 產品清單 -->
         <div
           v-for="product in filterProducts"
-          class="col-6 col-md-4 col-lg-3 d-none d-md-block"
+          class="col-12 col-sm-6 col-md-4 col-lg-3"
           :key="product.id"
         >
           <ProductCard :product="product"> </ProductCard>
         </div>
-      </div>
-      <div v-for="product in filterProducts" class="d-md-none" :key="product.id">
-        <ProductCard :product="product" :isHorizon="true"> </ProductCard>
       </div>
     </div>
   </section>

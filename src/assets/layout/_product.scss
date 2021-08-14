@@ -3,6 +3,10 @@
 */
 .product-card {
   height: 100%;
+  .card-body {
+    min-height: 150px;
+    max-height: 150px;
+  }
   .price {
     color: $bg-opacity-color-2;
     display: block;
@@ -14,7 +18,7 @@
     color: $bg-opacity-color-2;
   }
   img {
-    // height: 200px;
+    height: 240px !important;
     width: 100%;
     transform: scale(1, 1);
     transition: all 0.5s ease-out;
@@ -64,6 +68,9 @@
     z-index: 999;
   }
 }
+.product-card-touch{
+  cursor: pointer;
+}
 
 /*
   單一產品資訊
@@ -89,6 +96,7 @@
     }
   }
   .product-recommand {
+    margin-top: 3rem;
     h3 {
       letter-spacing: 0.25rem;
     }

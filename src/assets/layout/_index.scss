@@ -3,6 +3,12 @@
 */
 .message .card {
   box-shadow: #333 0px 0px 6px;
+  .card-body {
+    padding: 2rem;
+    @include media-breakpoint-down(md) {
+      padding:1rem;
+    }
+  }
 }
 
 #message-list {
@@ -27,9 +33,14 @@
   首頁區塊 (section)
 */
 .index-content {
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 
   h3 {
     letter-spacing: 0.25rem;
   }
+}
+
+.subscription {
+  background: $bg-opacity-color-2;
+  margin: 0;
 }

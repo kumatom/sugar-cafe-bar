@@ -1,37 +1,41 @@
 .banner-view-about {
   position: relative;
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
+  padding: 1rem;
   min-width: 0;
   word-wrap: break-word;
   background-color: $bg-opacity-color-1;
   background-clip: border-box;
   box-shadow: #333 0px 0px 6px;
+  margin-bottom: 3rem;
   // border: 1px solid rgba(0, 0, 0, 0.125);
   // border-radius: 0.25rem;
 }
 
 .about-info {
-  margin-top: 30px;
-
+  padding: 1rem 1rem;
   h2 {
     color: $main-color-1;
     text-align: center;
   }
   p {
-    margin-top: 30px;
-    font-size: 1.2rem;
-    color: #fff;
+    // margin-top: 30px;
+    font-size: 1.1rem;
+    // color: #fff;
     // padding: 1rem;
     letter-spacing: 0.25rem;
     strong {
       color: $bg-opacity-color-2;
     }
   }
+  hr {
+    margin: 2rem 0;
+  }
 }
 
 @include media-breakpoint-down(md) {
-  .about-info p {
-    padding: 1.5rem;
+  .about-info {
+    margin-top: 1rem;
   }
 }

@@ -10,6 +10,10 @@ import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 
+// import aos
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+
 // import vee-validate
 import {
   Field, Form, ErrorMessage, defineRule, configure,
@@ -29,6 +33,9 @@ import { date, currency } from './methods/filter';
 
 import App from './App.vue';
 import router from './router';
+
+// 初始化Aos
+Aos.init();
 
 defineRule('required', required);
 defineRule('email', email);
@@ -51,6 +58,7 @@ app.config.globalProperties.$filters = {
 
 app.use(router);
 app.use(VueAxios, axios);
+app.use(Aos);
 app.component('Loading', Loading);
 app.component('Form', Form);
 app.component('Field', Field);

@@ -38,7 +38,7 @@ export default {
     limitCount: {
       type: Number,
       default() {
-        return 3;
+        return 4;
       },
     },
     // 篩選產品
@@ -49,6 +49,13 @@ export default {
           name: '',
           category: '',
         };
+      },
+    },
+    // 是否隨機挑選產品
+    isRandom: {
+      type: Boolean,
+      default() {
+        return false;
       },
     },
   },
@@ -73,8 +80,8 @@ export default {
         pagination: '.swiper-pagination',
       },
       breakpoints: {
-        1024: {
-          slidesPerView: 3,
+        1200: {
+          slidesPerView: 4,
           spaceBetween: 20,
         },
         768: {
@@ -94,6 +101,31 @@ export default {
   },
   inject: ['emitter', '$httpMessageState'],
   methods: {
+    // 取得隨機產品清單
+    getRandomProducts() {
+      let str = '';
+      const number = [];
+      for (let i = 0; i < this.limitCount; i += 1) {
+        str = Math.round(Math.random() * 10);
+        for (let j = 0; j < number.length; j += 1) {
+          if (number[j] === str) {
+            number.splice(j, 1);
+            i -= 1;
+          }
+        }
+        number.push(str);
+      }
+
+      number.forEach((num) => {
+        this.products.forEach((item, key) => {
+          if (key === num) {
+            this.filterProducts.push(item);
+          }
+        });
+      });
+
+      // console.log(number);
+    },
     // 取得產品清單 (店長推薦)
     getProducts() {
       const api = `${this.baseAPI}/products/all`;
@@ -107,10 +139,24 @@ export default {
             // 取得推薦產品
             this.productCount = 0;
             this.filterProducts = [];
-            this.products.forEach((item) => {
-              if (recStrCategory !== '') {
-                // 取得不包含產品本身的推薦產品
-                if (item.category === recStrCategory && item.title !== this.filterProduct.name) {
+
+            // 判斷是否取得隨機產品
+            if (this.isRandom) {
+              this.getRandomProducts();
+            } else {
+              this.products.forEach((item) => {
+                if (recStrCategory !== '') {
+                  // 取得不包含產品本身的推薦產品 (同類別)
+                  if (item.id !== this.filterProduct.id && item.category === recStrCategory) {
+                    if (this.productCount < this.limitCount) {
+                      const tempItem = { ...item };
+                      // tempItem.isAddCart = true;
+                      this.filterProducts.push(tempItem);
+                      this.productCount += 1;
+                    }
+                  }
+                } else if (item.title.includes(this.recStr)) {
+                  // 產品筆數限制
                   if (this.productCount < this.limitCount) {
                     const tempItem = { ...item };
                     // tempItem.isAddCart = true;
@@ -118,17 +164,9 @@ export default {
                     this.productCount += 1;
                   }
                 }
-              } else if (item.title.includes(this.recStr)) {
-                // 產品筆數限制
-                if (this.productCount < this.limitCount) {
-                  const tempItem = { ...item };
-                  // tempItem.isAddCart = true;
-                  this.filterProducts.push(tempItem);
-                  this.productCount += 1;
-                }
-              }
-            });
-            // console.log(this.filterProducts);
+              });
+              // console.log(this.filterProducts);
+            }
           } else {
             // this.$httpMessageState(response, '產品列表');
           }

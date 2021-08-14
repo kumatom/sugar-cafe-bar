@@ -68,9 +68,9 @@
           </div>
         </div>
         <div class="product-description" v-if="product.description">
-          <span>好食說明</span>
-          <p>{{ product.description }}</p>
-          <!-- <p>{{ product.content }}</p> -->
+          <h4 class="fw-bold">好食說明</h4>
+          <p><i class="bi bi-check2"></i> {{ product.description }}</p>
+          <p v-if="product.content"><i class="bi bi-check2"></i> {{ product.content }}</p>
         </div>
       </div>
     </div>
@@ -84,6 +84,19 @@
         <div class="row">
           <!-- 好食推薦清單 -->
           <ProductsCardSwiper :limitCount="999" :filterProduct="recProduct" />
+        </div>
+      </div>
+    </section>
+    <!-- 猜你喜歡 -->
+    <section class="product-recommand">
+      <h3 class="mb-3">
+        <i class="bi bi-heart-fill"></i>
+        猜你喜歡
+      </h3>
+      <div class="container-lg">
+        <div class="row">
+          <!-- 猜你喜歡清單 -->
+          <ProductsCardSwiper :limitCount="6" :isRandom="true" :filterProduct="recProduct"  />
         </div>
       </div>
     </section>
@@ -114,6 +127,7 @@ export default {
         isDash: false,
       },
       recProduct: {
+        id: 0,
         name: '',
         category: '',
       },
@@ -165,6 +179,7 @@ export default {
             this.product = { ...tempItem };
             // 取得推薦產品資訊
             this.recProduct = {
+              id: this.product.id,
               name: this.product.title,
               category: this.product.category,
             };

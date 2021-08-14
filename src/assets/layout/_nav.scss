@@ -17,6 +17,8 @@
   font-family: 'Lobster', cursive;
 }
 .scb-logo {
+  display: flex;
+  align-items: center;
   @media (max-width: 320px) {
     // display: none;
     margin-left: 1rem;
@@ -28,10 +30,23 @@
 }
 
 .banner {
-  min-height: 40vh;
+  min-height: 45vh;
 
   .banner-text {
     z-index: 999;
+
+    #bannerView-index {
+      height: 200px;
+      h1 {
+        padding-bottom: 2rem;
+      }
+      @include media-breakpoint-down(xl) {
+        height: 150px;
+        h1 {
+          padding-bottom: 1.5rem;
+        }
+      }
+    }
   }
   h1 {
     letter-spacing: 0.75rem;
@@ -44,6 +59,12 @@
 
 .banner-area {
   margin-bottom: -80px;
+  @include media-breakpoint-down(md) {
+    margin-bottom: -70px;
+  }
+  @media (max-width: 320px) {
+    margin-bottom: -50px;
+  }
 }
 
 /*
@@ -69,7 +90,7 @@
 
 .cart-btn {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   padding: 0.3rem 0.7rem;
   color: $main-color-2;
   border-radius: 50%;
@@ -127,24 +148,43 @@
   }
 }
 
-@include media-breakpoint-down(md) {
-  .banner-area {
-    margin-bottom: -70px;
-  }
-}
-
 /*
   nav 設定
 */
 #navbarNav {
   .nav-link {
-    &.active {
-      border-bottom: 3px $bg-opacity-color-1 solid;
-      color: $bg-opacity-color-1 !important;
-      font-weight: bold;
-      padding-bottom: 0;
-      transition: border-bottom ease-out 0.3s;
+    position: relative;
+    &::after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 32px;
+      margin: auto;
+      width: 0%;
+      content: '';
+      color: transparent;
+      background: $bg-opacity-color-2;
+      height: 4px;
+      transition: all .35s;
     }
+    &.active,&:hover {
+      color: $bg-opacity-color-1 !important;
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 32px;
+        margin: auto;
+        width: 50%;
+        content: '';
+        color: transparent;
+        background: $bg-opacity-color-1;
+        height: 4px;
+      }
+    }
+    
   }
 }
 
@@ -154,13 +194,17 @@
 .cart-wrapper {
   background: $main-color-1;
   .offcanvas-header {
+    align-items: baseline;
     h3 {
       letter-spacing: 0.25rem;
     }
   }
 
   .offcanvas-body {
-    padding: 12px;
+    padding: 0 1.25rem;
+    @include media-breakpoint-down(lg) {
+      padding: 0 1rem;
+    }
     .card {
       min-height: 150px;
       .card-body {

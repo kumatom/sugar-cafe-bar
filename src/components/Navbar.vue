@@ -58,6 +58,7 @@
                   :to="navItem.menu.url"
                   data-bs-dismiss="offcanvas"
                 >
+                  <i class="bi bi-basket me-2"></i>
                   {{ navItem.menu.name }}
                 </router-link>
               </li>
@@ -68,6 +69,7 @@
                   :to="navItem.about.url"
                   data-bs-dismiss="offcanvas"
                 >
+                  <i class="bi bi-shop me-2"></i>
                   {{ navItem.about.name }}
                 </router-link>
               </li>
@@ -130,7 +132,7 @@
           aria-labelledby="cartListWrapperLabel"
         >
           <div class="offcanvas-header">
-            <h3 id="cartListWrapperLabel">訂餐清單</h3>
+            <h3 class="offcanvas-title" id="cartListWrapperLabel">訂餐清單</h3>
             <button
               type="button"
               class="btn-close text-reset"
@@ -181,8 +183,7 @@
                     <div class="col-4">
                       <button
                         type="button"
-                        class="text-nowrap btn btn-secondary w-100"
-                        style="color:#695C4C;"
+                        class="text-nowrap btn btn-secondary text-primary w-100"
                         :disabled="loadingStatus.loadingItem === cart.id"
                         @click="deleteCart(cart.id)"
                       >
@@ -276,7 +277,7 @@
           <section id="bannerView-index" v-if="pageName === 'Index'">
             <h1>與你一起享受悠閒時光</h1>
             <router-link to="/menu">
-              <button type="button" class="btn btn-secondary btn-md">
+              <button type="button" class="btn btn-secondary btn-lg">
                 立即訂餐
                 <!-- <i class="bi bi-chevron-right"></i> -->
               </button>
@@ -364,10 +365,6 @@ export default {
     $route() {
       // console.log(this.$route);
       this.chagePage();
-    },
-    // 監聽 cart (訂餐清單) 是否有變動 => 金額小計
-    cart() {
-      this.totalCartAmount();
     },
   },
   inject: ['emitter', '$httpMessageState'],

@@ -14,10 +14,10 @@ npm run build
 
 git init
 git add -A
-git commit -m '[第二版] SugarCafeBar - 加入購物車、結帳付款'
+git commit -m '[第三版] SugarCafeBar - 首頁、關於我們、產品卡片畫面調整 (首頁部分區塊加入AOS效果)'
 
 # 部署到 https://<USERNAME>.github.io
-git push -f https://github.com/kumatom/sugar-cafe-bar.git master
-# git push -f https://github.com/kumatom/sugar-cafe-bar.git master:gh-pages
+# git push -f https://github.com/kumatom/sugar-cafe-bar.git master
+git push -f https://github.com/kumatom/sugar-cafe-bar.git master:gh-pages
 
 cd -

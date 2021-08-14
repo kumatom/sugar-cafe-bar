@@ -35,7 +35,7 @@
                   placeholder="請輸入圖片連結"
                 />
               </div>
-              <!-- <div class="mb-3">
+              <div class="mb-3">
                 <label for="customFile" class="form-label"
                   >或 上傳圖片
                   <i
@@ -50,7 +50,7 @@
                   ref="fileInput"
                   @change="uploadFile"
                 />
-              </div> -->
+              </div>
               <img class="img-fluid" :src="tempProduct.imageUrl" />
               <!-- 延伸技巧，多圖 -->
               <div class="mt-5" v-if="tempProduct.imagesUrl">
@@ -246,35 +246,35 @@ export default {
     },
   },
   methods: {
-    // uploadFile() {
-    //   const uploadedFile = this.$refs.fileInput.files[0];
-    //   const formData = new FormData();
-    //   formData.append('file-to-upload', uploadedFile);
-    //   const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
-    //   this.status.fileUploading = true;
-    //   this.$http.post(url, formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   }).then((response) => {
-    //     this.status.fileUploading = false;
-    //     if (response.data.success) {
-    //       this.tempProduct.imageUrl = response.data.imageUrl;
-    //       this.$refs.fileInput.value = '';
-    //       this.emitter.emit('push-message', {
-    //         style: 'success',
-    //         title: '圖片上傳結果',
-    //       });
-    //     } else {
-    //       this.$refs.fileInput.value = '';
-    //       this.emitter.emit('push-message', {
-    //         style: 'danger',
-    //         title: '圖片上傳結果',
-    //         content: response.data.message,
-    //       });
-    //     }
-    //   });
-    // },
+    uploadFile() {
+      const uploadedFile = this.$refs.fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadedFile);
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.status.fileUploading = true;
+      this.$http.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        this.status.fileUploading = false;
+        if (response.data.success) {
+          this.tempProduct.imageUrl = response.data.imageUrl;
+          this.$refs.fileInput.value = '';
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: '圖片上傳結果',
+          });
+        } else {
+          this.$refs.fileInput.value = '';
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '圖片上傳結果',
+            content: response.data.message,
+          });
+        }
+      });
+    },
     openModal() {
       this.modal.show();
     },
