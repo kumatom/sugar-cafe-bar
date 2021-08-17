@@ -54,41 +54,6 @@
   </div>
 </template>
 
-<style lang="scss">
-@import '@/assets/all';
-label {
-  color: $main-color-2;
-}
-
-.form-signin {
-  height: auto;
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
-}
-
-.card-signin {
-  opacity: 0.9;
-  // background-color: #6d8c6f;
-}
-
-.Login-body-center {
-  height: 100%;
-  text-align: center;
-}
-
-.Login-body-style {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // background-image: url('https://i.imgur.com/bXfHBA4.jpg');
-  // background-position: 50%;
-  // background-size: cover;
-  background: $main-color-2;
-}
-</style>
-
 <script>
 const body = document.querySelector('body');
 const html = document.querySelector('html');
@@ -181,3 +146,37 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scope>
+// @import '@/assets/all';
+label {
+  color: #524538;
+}
+.form-signin {
+  height: auto;
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.card-signin {
+  opacity: 0.9;
+  // background-color: #6d8c6f;
+}
+
+.Login-body-center {
+  height: 100%;
+  text-align: center;
+}
+
+.Login-body-style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background-image: url('https://i.imgur.com/bXfHBA4.jpg');
+  // background-position: 50%;
+  // background-size: cover;
+  background: #524538;
+}
+</style>

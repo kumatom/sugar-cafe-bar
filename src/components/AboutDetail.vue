@@ -1,10 +1,16 @@
 <template>
-  <div class="row flex-md-row flex-column mb-3" >
+  <div class="row flex-md-row flex-column mb-3">
     <div class="col-12 col-md-6 mb-4" data-aos="zoom-in" data-aos-duration="1000">
-      <img class="img-fluid shadow-lg rounded" style="opacity:0.9" src="https://i.imgur.com/sd5Hqw4.jpg" alt="" />
+      <img
+        class="img-fluid shadow-lg rounded"
+        style="opacity:0.9"
+        src="@/assets/images/about-1.jpg"
+        alt=""
+      />
     </div>
     <div
-      data-aos="fade-up" data-aos-duration="1500"
+      data-aos="fade-up"
+      data-aos-duration="1500"
       class="col-12 col-md-6 mt-4 mb-4
               d-flex align-items-center
               flex-column justify-content-center"
@@ -26,7 +32,8 @@
   </div>
   <div class="row flex-md-row flex-column-reverse">
     <div
-      data-aos="fade-up" data-aos-duration="1500"
+      data-aos="fade-up"
+      data-aos-duration="1500"
       class="col-12 col-md-6 mt-4
               d-flex align-items-center
               flex-column justify-content-center"
@@ -42,7 +49,12 @@
       </router-link>
     </div>
     <div class="col-12 col-md-6 mb-4" data-aos="zoom-in" data-aos-duration="1000">
-      <img class="img-fluid shadow-lg rounded" style="opacity:0.9" src="https://i.imgur.com/lLjfIjB.jpg" alt="" />
+      <img
+        class="img-fluid shadow-lg rounded"
+        style="opacity:0.9"
+        src="@/assets/images/about-2.jpg"
+        alt=""
+      />
     </div>
   </div>
 </template>

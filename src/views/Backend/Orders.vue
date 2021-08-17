@@ -60,12 +60,6 @@
   <Pagination :pages="pagination" @emitPages="getOrders"></Pagination>
 </template>
 
-<style lang="scss">
-.is-paid {
-  background: #e9f7ea;
-}
-</style>
-
 <script>
 import DelModal from '@/components/Backend/DelModal.vue';
 import OrderModal from '@/components/Backend/OrderModal.vue';
@@ -139,3 +133,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.is-paid {
+  background: #e9f7ea;
+}
+</style>

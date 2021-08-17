@@ -13,4 +13,13 @@
       color: $main-color-2;
     }
   }
+  .nav-link {
+    &.disabled {
+      color:$main-color-1;
+      opacity: 0.6;
+    }
+  }
+  h5 {
+    font-weight: bold;
+  }
 }

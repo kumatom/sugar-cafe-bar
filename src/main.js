@@ -28,9 +28,6 @@ import Alert from './components/Backend/Alert.vue';
 // 自定義function
 import { date, currency } from './methods/filter';
 
-// import google maps api
-// import VueGoogleMaps from '@fawmi/vue-google-maps';
-
 import App from './App.vue';
 import router from './router';
 
@@ -58,7 +55,6 @@ app.config.globalProperties.$filters = {
 
 app.use(router);
 app.use(VueAxios, axios);
-app.use(Aos);
 app.component('Loading', Loading);
 app.component('Form', Form);
 app.component('Field', Field);

@@ -127,8 +127,8 @@ export default {
             this.$httpMessageState(response, '產品列表');
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          // console.dir(err);
         });
     },
     // 開啟產品Modal
@@ -169,8 +169,8 @@ export default {
             this.$httpMessageState(response, status);
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          // console.dir(err);
         });
     },
     openDelProductModal(item) {
@@ -195,8 +195,8 @@ export default {
             this.$httpMessageState(response, '刪除產品');
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          // console.dir(err);
         });
     },
   },

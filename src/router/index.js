@@ -71,10 +71,6 @@ const routes = [
       },
     ],
   },
-  // {
-  //   path: '/backend/:pathMatch(.*)*',
-  //   redirect: { name: 'BackEnd' },
-  // },
 ];
 
 const router = createRouter({

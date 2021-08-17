@@ -45,10 +45,7 @@ export default {
             }, 1000);
           }
         })
-        .catch((err) => {
-          const errMsg = err.response.data.message;
-          console.log(errMsg);
-        });
+        .catch(() => {});
     },
   },
   created() {

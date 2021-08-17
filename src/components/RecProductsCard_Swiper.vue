@@ -97,9 +97,15 @@ export default {
           spaceBetween: 10,
         },
       },
+      tips: {
+        data: {
+          success: false,
+          message: '糟糕，無法取得推薦清單!',
+        },
+      },
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     // 取得隨機產品清單
     getRandomProducts() {
@@ -126,7 +132,7 @@ export default {
 
       // console.log(number);
     },
-    // 取得產品清單 (店長推薦)
+    // 取得推薦清單 (店長推薦)
     getProducts() {
       const api = `${this.baseAPI}/products/all`;
       this.$http
@@ -150,7 +156,6 @@ export default {
                   if (item.id !== this.filterProduct.id && item.category === recStrCategory) {
                     if (this.productCount < this.limitCount) {
                       const tempItem = { ...item };
-                      // tempItem.isAddCart = true;
                       this.filterProducts.push(tempItem);
                       this.productCount += 1;
                     }
@@ -159,7 +164,6 @@ export default {
                   // 產品筆數限制
                   if (this.productCount < this.limitCount) {
                     const tempItem = { ...item };
-                    // tempItem.isAddCart = true;
                     this.filterProducts.push(tempItem);
                     this.productCount += 1;
                   }
@@ -168,11 +172,11 @@ export default {
               // console.log(this.filterProducts);
             }
           } else {
-            // this.$httpMessageState(response, '產品列表');
+            this.$httpMessageState(response, '取得推薦清單');
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          this.$httpMessageState(this.tips, '取得推薦清單');
         });
     },
   },

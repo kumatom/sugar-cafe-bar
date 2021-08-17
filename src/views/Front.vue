@@ -23,12 +23,18 @@ export default {
     };
   },
   methods: {
+    // 調整切換頁面效果 (載入效果)
     changeLoadingStatus(status) {
       this.isLoading = status;
     },
   },
   mounted() {
     this.emitter.on('change-isLoading', (status) => {
+      this.changeLoadingStatus(status);
+    });
+  },
+  unmounted() {
+    this.emitter.off('change-isLoading', (status) => {
       this.changeLoadingStatus(status);
     });
   },

@@ -82,11 +82,12 @@
             </div>
           </div>
         </div>
+        <!-- 手機版選單 END-->
       </div>
     </div>
   </section>
 
-  <!-- 菜單 -->
+  <!-- 菜單內容 -->
   <section class="product menu-content">
     <div class="container-fluid">
       <div class="row justify-content-center gy-3 gx-3">
@@ -112,7 +113,7 @@ export default {
   components: {
     ProductCard,
   },
-  inject: ['emitter'],
+  inject: ['emitter', '$httpMessageState'],
   data() {
     return {
       // API路徑
@@ -159,16 +160,22 @@ export default {
       filterProducts: [],
       // 手機版選單資訊
       smallMenu: {},
+      tips: {
+        data: {
+          success: false,
+          message: '糟糕，取不到菜單哦!',
+        },
+      },
     };
   },
   methods: {
-    // 切換產品類別
+    // 切換菜單類別
     changeCategory(key) {
       this.currentCategory = key;
       this.smallMenu = { ...this.categoryList[key] };
       this.getfilterCategoryProducts();
     },
-    // 取得對應類別產品
+    // 取得對應類別產品 (菜單)
     getfilterCategoryProducts() {
       this.filterProducts = [];
       this.products.forEach((item) => {
@@ -176,17 +183,15 @@ export default {
         const id = this.currentCategory;
         const category = this.categoryList.filter((obj) => obj.id === id);
         const { name } = category[0];
-        // 檢查是否有相同類別的產品
+        // 檢查是否有相同類別的產品(菜單)
         const isCheck = id === 0 ? item.title.includes(name) : name === item.category;
         if (isCheck) {
           const tempItem = { ...item };
-          // 檢查是否已加入至購物車
-          tempItem.isAddCart = false;
           this.filterProducts.push(tempItem);
         }
       });
     },
-    // 取得產品清單
+    // 取得菜單
     getProducts() {
       const api = `${this.baseAPI}/products/all`;
       this.emitter.emit('change-isLoading', true);
@@ -196,19 +201,21 @@ export default {
           this.emitter.emit('change-isLoading', false);
           if (response.data.success) {
             this.products = response.data.products;
-            // 取得(類別) 產品清單
+            // 取得(菜單類別)
             this.getfilterCategoryProducts();
           } else {
-            // this.$httpMessageState(response, '產品列表');
+            this.$httpMessageState(response, '菜單取得');
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          // console.dir(err);
+          this.$httpMessageState(this.tips, '菜單取得');
         });
     },
   },
   mounted() {
     this.getProducts();
+    // 預設菜單類別為第一筆
     this.changeCategory(0);
   },
 };

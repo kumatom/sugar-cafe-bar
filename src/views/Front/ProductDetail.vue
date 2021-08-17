@@ -4,7 +4,7 @@
   <div class="container-lg productDetail-container" v-if="product.id">
     <div class="row mb-3">
       <div class="col-md-6 productDetail-img mb-3">
-        <img :src="product.imageUrl" class="img-fluid rounded" width="500" />
+        <img :src="product.imageUrl" class="img-fluid rounded" width="500" :alt="product.title" />
       </div>
       <div class="col-md-6 productDetailInfo">
         <span class="badge rounded-pill bg-secondary h5">{{ product.category }}</span>
@@ -96,7 +96,7 @@
       <div class="container-lg">
         <div class="row">
           <!-- 猜你喜歡清單 -->
-          <ProductsCardSwiper :limitCount="6" :isRandom="true" :filterProduct="recProduct"  />
+          <ProductsCardSwiper :limitCount="6" :isRandom="true" :filterProduct="recProduct" />
         </div>
       </div>
     </section>
@@ -156,12 +156,14 @@ export default {
     chageLoadingStatus(status) {
       this.isLoading = status;
     },
-    showMsg(status) {
-      if (status) {
-        this.tips.data.success = true;
-        this.tips.data.message = `${this.product.title} 已加入至訂餐清單!`;
-        this.$httpMessageState(this.tips, '加入訂餐清單');
-      }
+    // 設定通知訊息
+    setTips(status, message) {
+      this.tips = {
+        data: {
+          success: status,
+          message,
+        },
+      };
     },
     // 取得單一產品
     getProduct() {
@@ -174,8 +176,6 @@ export default {
           if (response.data.success) {
             // 取得單一產品
             const tempItem = { ...response.data.product };
-            // 檢查是否有加入購物車
-            tempItem.isAddCart = true;
             this.product = { ...tempItem };
             // 取得推薦產品資訊
             this.recProduct = {
@@ -187,11 +187,12 @@ export default {
           } else {
             // 查無產品時，導向404
             this.$router.push('/product');
-            // this.$httpMessageState(response, '產品列表');
+            this.$httpMessageState(response, '產品取得');
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          this.setTips(false, '糟糕，找不到此產品!');
+          this.$httpMessageState(this.tips, '產品取得');
         });
     },
     // 加入至購物車 (訂餐清單)
@@ -206,26 +207,31 @@ export default {
       this.$http
         .post(api, { data: cartItem })
         .then((res) => {
+          this.loadingStatus.loadingItem = '';
           if (res.data.success) {
-            this.showMsg(true);
-            this.loadingStatus.loadingItem = '';
+            this.setTips(true, `${this.product.title} 已加入至訂餐清單!`);
+            this.$httpMessageState(this.tips, '加入訂餐清單');
             this.cart.quantity = 1;
             // 取得訂餐清單
             this.emitter.emit('get-cart');
+          } else {
+            this.$httpMessageState(res, '加入訂餐清單');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.loadingStatus.loadingItem = '';
-          const errMsg = err.response.data.message;
-          console.dir(errMsg);
+          this.setTips(false, '糟糕，加入訂餐清單失敗!');
+          this.$httpMessageState(this.tips, '加入訂餐清單');
         });
     },
+    // 減少數量 (等於 1 時不能減)
     dashNumber() {
       if (this.cart.quantity > 1) {
         this.cart.quantity -= 1;
         this.cart.isDash = this.cart.quantity > 1;
       }
     },
+    // 增加數量
     addNumber() {
       this.cart.quantity += 1;
       this.cart.isDash = true;

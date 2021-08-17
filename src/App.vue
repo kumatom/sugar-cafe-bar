@@ -3,12 +3,6 @@
   <router-view />
 </template>
 
-<style lang="scss">
-@import '@/assets/all';
-// bootstrap icon
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css');
-</style>
-
 <script>
 import ToastMessages from '@/components/ToastMessages.vue';
 import emitter from '@/methods/eventBus';
@@ -26,3 +20,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@import '@/assets/all';
+// bootstrap icon
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css');
+</style>

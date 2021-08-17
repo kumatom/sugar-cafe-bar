@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="card-body">
-        <span class="badge rounded-pill bg-primary h5">{{ product.category }}</span>
+        <span class="badge rounded-pill bg-primary h5 float-end">{{ product.category }}</span>
         <h5>{{ product.title }}</h5>
         <p class="text-white">{{ product.description }}</p>
       </div>
@@ -69,7 +69,7 @@ export default {
       },
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     showMsg(status) {
       if (status) {
@@ -97,10 +97,10 @@ export default {
             this.emitter.emit('get-cart');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           this.loadingStatus.loadingItem = '';
-          const errMsg = err.response.data.message;
-          console.dir(errMsg);
+          this.setTips(false, '糟糕，無法加入訂餐清單!');
+          this.$httpMessageState(this.tips, '訂餐清單加入');
         });
     },
     // 檢視產品詳細資訊

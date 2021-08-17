@@ -10,7 +10,12 @@
           </h3>
           <div class="row">
             <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-              <img class="img-fluid rounded fade" :src="showItem.imageUrl" width="500" />
+              <img
+                class="img-fluid rounded fade"
+                :src="showItem.imageUrl"
+                width="500"
+                :alt="showItem.imageUrl"
+              />
             </div>
             <div class="col-md-6 col-lg-8">
               <ul id="message-list" class="list-group list-group-flush">
@@ -49,7 +54,12 @@
 
     <!-- 關於我們 -->
     <section class="about index-content">
-      <h3 class="mb-3" data-aos="fade-right" data-aos-duration="1000">
+      <h3
+        class="mb-3"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+        data-aos-anchor-placement="top-bottom"
+      >
         <i class="bi bi-shop"></i>
         關於我們
       </h3>
@@ -58,7 +68,12 @@
 
     <!-- 推薦菜單 -->
     <section class="product index-content">
-      <h3 class="mb-3" data-aos="fade-right" data-aos-duration="1000">
+      <h3
+        class="mb-3"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+        data-aos-anchor-placement="top-bottom"
+      >
         <i class="bi bi-hand-thumbs-up-fill"></i>
         推薦菜單
       </h3>
@@ -76,11 +91,7 @@
     </section>
     <!-- 如何前往 -->
     <section class="map index-content">
-      <h3
-        class="mb-3"
-        data-aos="fade-right"
-        data-aos-duration="1000"
-      >
+      <h3 class="mb-3" data-aos="fade-right" data-aos-duration="1000">
         <i class="bi bi-geo-alt-fill"></i>
         如何前往
       </h3>
@@ -103,11 +114,7 @@
   <section class="subscription index-content">
     <div class="container-lg py-5">
       <div class="row">
-        <div
-          class="col-12 col-md-6 mb-3"
-          data-aos="fade-right"
-          data-aos-duration="1000"
-        >
+        <div class="col-12 col-md-6 mb-3" data-aos="fade-right" data-aos-duration="1000">
           <h3 class="mb-3">
             <i class="bi bi-megaphone-fill"></i>
             訂閱我們
@@ -146,11 +153,7 @@
             </div>
           </Form>
         </div>
-        <div
-          class="col-12 col-md-6"
-          data-aos="fade-up"
-          data-aos-duration="1500"
-        >
+        <div class="col-12 col-md-6" data-aos="fade-up" data-aos-duration="1500">
           <h3 class="text-center">
             喜歡我們，也幫我們按個讚哦
             <a

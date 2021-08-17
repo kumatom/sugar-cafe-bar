@@ -7,21 +7,9 @@
           class="navbar-brand position-absolute scb-logo"
           style="left: 50%; transform: translate(-50%, -50%); top: 50%;"
         >
-          <img src="https://i.imgur.com/kUYxttR.png" alt="" width="45" class="me-3" />
+          <img src="@/assets/images/logo-scb.png" alt="" width="45" class="me-3" />
           <span class="scb-nav-title text-secondary">Sugar Cafe' Bar</span>
         </router-link>
-
-        <!-- <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="bi bi-filter-left" style="font-size:2rem;"></i>
-        </button> -->
         <button
           id="navMenuBtn"
           class="btn btn-primary d-lg-none"
@@ -113,6 +101,7 @@
         <!-- 購物車按鈕 -->
         <div class="d-flex me-3 fun-bar d-none d-md-block">
           <a
+            href="#"
             id="nav-cart-btn"
             class="d-block cart-btn"
             data-bs-toggle="offcanvas"
@@ -149,7 +138,7 @@
               <router-link to="/menu">
                 <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="offcanvas">
                   立即點餐
-                  <!-- <i class="bi bi-chevron-right"></i> -->
+                  <i class="bi bi-arrow-right"></i>
                 </button>
               </router-link>
             </div>
@@ -157,28 +146,35 @@
             <div class="card mb-3" v-for="cart in cart.carts" :key="cart.id">
               <div class="row g-0">
                 <div class="col-4 d-flex align-items-center justify-content-center">
-                  <img class="img-fluid" :src="cart.product.imageUrl" />
+                  <a
+                    href="#"
+                    @click.prevent="viewProductDetail(cart.product_id)"
+                    data-bs-dismiss="offcanvas"
+                  >
+                    <img class="img-fluid" :src="cart.product.imageUrl" />
+                  </a>
                 </div>
                 <div class="col-8">
                   <div class="card-body">
+                    <p class="card-title">
+                      {{ cart.product.title }}
+                    </p>
+                    <p class="price">
+                      NT${{ $filters.currency(cart.product.price) }} / {{ cart.product.unit }}
+                    </p>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <h5 class="text-primary text-end price">
                     <div
-                      class="spinner-border spinner-border-md text-primary float-end"
+                      class="spinner-border spinner-border-sm text-primary me-2"
                       role="status"
                       v-if="loadingStatus.loadingItem === cart.id"
                     >
                       <span class="visually-hidden">Loading...</span>
                     </div>
-                    <span class="card-title">
-                      {{ cart.product.title }}
-                    </span>
-                    <p class="card-text">
-                      <span style="letter-spacing:0.25rem;">
-                        小計 : NT${{ $filters.currency(cart.product.price * cart.qty) }}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <div class="card-footer">
+                    小計 : NT${{ $filters.currency(cart.product.price * cart.qty) }}
+                  </h5>
                   <div class="row align-items-center">
                     <div class="col-4">
                       <button
@@ -187,7 +183,7 @@
                         :disabled="loadingStatus.loadingItem === cart.id"
                         @click="deleteCart(cart.id)"
                       >
-                        移除
+                        <i class="bi bi-trash"></i>
                       </button>
                     </div>
                     <div class="col-8">
@@ -234,14 +230,28 @@
                       padding:1rem;
                       border-radius: 0;"
           >
-            <div class="d-inline-flex justify-content-between mb-2">
-              <span class="text-light">金額小計: NT$ {{ $filters.currency(cartAmountTotal) }}</span>
-              <span class="text-light">品項小計: {{ cart?.carts?.length }} 項</span>
+            <div class="text-primary text-center mb-2" v-if="cart?.carts[0]?.coupon">
+              已套用優惠券
+              <span>
+                {{ cart?.carts[0]?.coupon.code }}
+                ({{ cart?.carts[0]?.coupon.title }})
+              </span>
+            </div>
+            <div
+              class="mb-2 text-light text-end"
+              :class="{ 'd-flex justify-content-between': cart?.carts[0]?.coupon }"
+            >
+              <h5>
+                總計 : <span class="price">NT${{ $filters.currency(cart.total) }}</span>
+              </h5>
+              <h5 class="text-danger" v-if="cart?.carts[0]?.coupon">
+                折扣後 : <span class="price">NT${{ $filters.currency(cart.final_total) }}</span>
+              </h5>
             </div>
             <router-link to="/order">
               <button
                 type="button"
-                class="btn btn-primary w-100 py-2 mb-2"
+                class="btn btn-primary w-100 py-3"
                 style="font-size:1.25rem;"
                 data-bs-dismiss="offcanvas"
               >
@@ -250,7 +260,7 @@
               </button>
             </router-link>
 
-            <button type="button" class="btn btn-dark text-primary" @click="deleteCart('all')">
+            <button type="button" class="btn btn-dark text-primary mt-3" @click="deleteCart('all')">
               <div
                 class="spinner-border spinner-border-sm text-primary"
                 role="status"
@@ -351,7 +361,6 @@ export default {
       },
       pageName: '',
       cart: {},
-      cartAmountTotal: 0,
       tips: {
         data: {
           success: false,
@@ -373,14 +382,6 @@ export default {
     chagePage() {
       this.pageName = this.$route.name;
     },
-    // 總計購物車金額
-    totalCartAmount() {
-      let tempTotal = 0;
-      this.cart.carts.forEach((cart) => {
-        tempTotal += cart.qty * cart.product.price;
-      });
-      this.cartAmountTotal = tempTotal;
-    },
     // 取得訂餐清單
     getCart() {
       const api = `${this.baseAPI}/cart`;
@@ -389,11 +390,11 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
-            this.totalCartAmount();
           }
         })
-        .catch((err) => {
-          console.dir(err);
+        .catch(() => {
+          this.setTips(false, '糟糕，無法取得訂餐清單!');
+          this.$httpMessageState(this.tips, '訂餐清單取得');
         });
     },
     // 更新訂餐清單
@@ -420,10 +421,10 @@ export default {
             // 更新購物車
             this.getCart();
           })
-          .catch((err) => {
+          .catch(() => {
             this.loadingStatus.loadingItem = '';
-            const errMsg = err.response.data.message;
-            console.dir(errMsg);
+            this.setTips(false, '糟糕，無法更新訂餐清單!');
+            this.$httpMessageState(this.tips, '訂餐清單更新');
           });
       }
     },
@@ -447,11 +448,15 @@ export default {
           this.getCart();
           this.loadingStatus.loadingItem = '';
         })
-        .catch((err) => {
+        .catch(() => {
           this.loadingStatus.loadingItem = '';
-          const errMsg = err.response.data.message;
-          console.dir(errMsg);
+          this.setTips(false, '糟糕，無法刪除訂餐清單!');
+          this.$httpMessageState(this.tips, '訂餐清單刪除');
         });
+    },
+    // 檢視產品詳細資訊
+    viewProductDetail(productId) {
+      this.$router.push(`/product/${productId}`);
     },
   },
   mounted() {
@@ -459,6 +464,12 @@ export default {
     this.chagePage();
     // 註冊取得訂餐清單事件
     this.emitter.on('get-cart', () => {
+      this.getCart();
+    });
+  },
+  unmounted() {
+    // 移除註冊取得訂餐清單事件
+    this.emitter.off('get-cart', () => {
       this.getCart();
     });
   },
