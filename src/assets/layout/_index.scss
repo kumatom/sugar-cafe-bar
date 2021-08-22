@@ -6,7 +6,7 @@
   .card-body {
     padding: 2rem;
     @include media-breakpoint-down(md) {
-      padding:1rem;
+      padding: 1rem;
     }
   }
 }
@@ -33,6 +33,7 @@
   首頁區塊 (section)
 */
 .index-content {
+  position: relative;
   margin-bottom: 4rem;
 
   h3 {
@@ -43,4 +44,13 @@
 .subscription {
   background: $bg-opacity-color-2;
   margin: 0;
+}
+
+/*
+  iframe
+*/
+iframe {
+  @include media-breakpoint-down(md) {
+    height: 300px;
+  }
 }

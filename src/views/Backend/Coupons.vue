@@ -81,7 +81,7 @@ export default {
       isNew: false,
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     openCouponModal(isNew, item) {
       this.isNew = isNew;

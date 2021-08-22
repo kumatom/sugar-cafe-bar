@@ -51,7 +51,7 @@
                   @change="uploadFile"
                 />
               </div>
-              <img class="img-fluid" :src="tempProduct.imageUrl" />
+              <img class="img-fluid" :src="tempProduct.imageUrl" :alt="tempProduct.imageUrl" />
               <!-- 延伸技巧，多圖 -->
               <div class="mt-5" v-if="tempProduct.imagesUrl">
                 <div
@@ -66,7 +66,7 @@
                     placeholder="請輸入連結"
                   />
                   <div>
-                    <img class="img-fluid" :src="image" />
+                    <img class="img-fluid" :src="image" :alt="image" />
                   </div>
                   <button
                     type="button"

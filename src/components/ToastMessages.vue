@@ -47,5 +47,12 @@ export default {
       this.toastShow();
     });
   },
+  unmounted() {
+    this.emitter.off('push-message', (message) => {
+      const { style = 'success', title, content } = message;
+      this.messages.push({ style, title, content });
+      this.toastShow();
+    });
+  },
 };
 </script>

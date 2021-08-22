@@ -3,7 +3,7 @@
     <div class="banner-view-about">
       <div class="row">
         <div class="col-12 col-md-6 px-3 d-flex align-items-center">
-          <img class="img-fluid rounded" src="@/assets/images/msg-1.jpg" />
+          <img class="img-fluid rounded" src="@/assets/images/msg-1.jpg" alt="關於我們圖片" />
         </div>
         <div class="col-12 col-md-6 about-info text-white">
           <h2 class="mb-4">關於 Sugar Cafe Bar</h2>

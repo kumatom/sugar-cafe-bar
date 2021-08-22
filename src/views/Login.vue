@@ -68,20 +68,22 @@ export default {
       alertClass: 'alert-success',
       alertMsg: 'HiHi',
       isShowAlert: false,
+      tips: {
+        data: {
+          success: false,
+          message: '登入失敗!請重新登入~',
+        },
+      },
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     onLogin() {
       this.$http
         .post(`${process.env.VUE_APP_API}/admin/signin`, this.user)
         .then((res) => {
-          // console.log(res);
+          this.$httpMessageState(res, '登入');
           if (res.data.success) {
-            this.isShowAlert = true;
-            this.alertClass = 'alert-success';
-            this.alertMsg = res.data.message;
-            this.$httpMessageState(res, '登入');
             // 延遲1.5秒後轉頁面
             setTimeout(() => {
               // 解構出 token 與 expired
@@ -91,16 +93,10 @@ export default {
               // 轉址到後台頁面
               this.$router.push('/backend');
             }, 1500);
-          } else {
-            // window.alert(res.data.message);
-            this.isShowAlert = true;
-            this.alertClass = 'alert-danger';
-            this.alertMsg = res.data.message;
           }
         })
-        .catch((err) => {
-          const errMsg = err.response.data.message;
-          console.log(errMsg);
+        .catch(() => {
+          this.$httpMessageState(this.tips, '登入');
         });
     },
     checkLogin() {
@@ -119,9 +115,8 @@ export default {
             // ...
           }
         })
-        .catch((err) => {
-          const errMsg = err.response.data.message;
-          console.log(errMsg);
+        .catch(() => {
+          this.$httpMessageState(this.tips, '登入');
         });
     },
     /** 存取Cookie */

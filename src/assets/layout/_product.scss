@@ -68,7 +68,7 @@
     z-index: 999;
   }
 }
-.product-card-touch{
+.product-card-touch {
   cursor: pointer;
 }
 
@@ -76,14 +76,21 @@
   單一產品資訊
 */
 .productDetail-container {
+  h3 {
+    letter-spacing: 0.25rem;
+  }
   .productDetail-img {
     display: flex;
     position: relative;
     justify-content: center;
+    align-items: center;
+    img {
+      max-height: 300px;
+    }
   }
   .productDetailInfo {
     position: relative;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     .product-description {
       padding: 1rem;
       background: $bg-opacity-color-1;
@@ -93,11 +100,43 @@
     h2 {
       font-weight: 600;
       letter-spacing: 0.25rem;
+      @include media-breakpoint-down(lg) {
+        font-size: 1.5rem;
+      }
     }
   }
   .product-recommand {
     margin-top: 3rem;
-    h3 {
+  }
+
+  .product-notice {
+    .card {
+      background: transparent;
+      border: none;
+      .card-body {
+        padding: 0.75rem;
+      }
+    }
+    .notice-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      padding: 1rem 0;
+      color: $main-color-2;
+      p {
+        font-size: 1.75rem;
+        font-weight: bold;
+        @include media-breakpoint-down(md) {
+          font-size: 1.25rem;
+        }
+      }
+    }
+    p {
+      color: $main-color-2;
+      text-align: center;
+      font-size: 1.25rem;
       letter-spacing: 0.25rem;
     }
   }

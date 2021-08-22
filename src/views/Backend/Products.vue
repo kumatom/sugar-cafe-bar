@@ -25,7 +25,7 @@
           <tr v-for="(item, key) in products" :key="item.id">
             <td>{{ key + 1 }}</td>
             <td>
-              <img :src="item.imageUrl" alt="" width="200" />
+              <img :src="item.imageUrl" :alt="item.imageUrl" width="200" />
             </td>
             <td>{{ item.category }}</td>
             <td>{{ item.title }}</td>
@@ -105,7 +105,7 @@ export default {
     DelModal,
     Pagination,
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     // 更改Loading狀態
     chageLoadingStatus(status) {

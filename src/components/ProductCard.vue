@@ -2,15 +2,15 @@
   <div class="card product-card">
     <div class="product-card-touch" @click="viewProductDetail(product.id)">
       <div class="product-img">
-        <img class="img-fluid" :src="product.imageUrl" height="220" />
+        <img class="img-fluid" :src="product.imageUrl" height="220" :alt="product.imageUrl" />
         <div class="mask">
-          <a @click.prevent="viewProductDetail(product.id)">
+          <a href="#" @click.prevent="viewProductDetail(product.id)">
             詳細資訊
           </a>
         </div>
       </div>
       <div class="card-body">
-        <span class="badge rounded-pill bg-primary h5 float-end">{{ product.category }}</span>
+        <span class="badge rounded-pill bg-primary mb-3">{{ product.category }}</span>
         <h5>{{ product.title }}</h5>
         <p class="text-white">{{ product.description }}</p>
       </div>
@@ -21,7 +21,7 @@
       <div class="d-flex justify-content-end">
         <button
           type="button"
-          class="btn btn-primary btn-md"
+          class="btn btn-primary btn-lg"
           :disabled="loadingStatus.loadingItem === product.id"
           @click.prevent="addCart"
         >
@@ -69,18 +69,19 @@ export default {
       },
     };
   },
-  inject: ['$httpMessageState'],
+  inject: ['emitter', '$httpMessageState'],
   methods: {
-    showMsg(status) {
-      if (status) {
-        this.tips.data.success = true;
-        this.tips.data.message = `${this.product.title} 已加入至訂餐清單!`;
-        this.$httpMessageState(this.tips, '加入訂餐清單');
-      }
+    // 設定通知訊息
+    setTips(status, message) {
+      this.tips = {
+        data: {
+          success: status,
+          message,
+        },
+      };
     },
     // 加入至購物車 (訂餐清單)
     addCart() {
-      // console.log(this.product.id);
       this.loadingStatus.loadingItem = this.product.id;
       const cartItem = {
         product_id: this.product.id,
@@ -91,7 +92,8 @@ export default {
         .post(api, { data: cartItem })
         .then((res) => {
           if (res.data.success) {
-            this.showMsg(true);
+            this.setTips(true, `${this.product.title} 已加入至訂餐清單!`);
+            this.$httpMessageState(this.tips, '加入訂餐清單');
             this.loadingStatus.loadingItem = '';
             // 取得訂餐清單
             this.emitter.emit('get-cart');

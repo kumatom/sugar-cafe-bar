@@ -74,6 +74,65 @@
         </div>
       </div>
     </div>
+    <!-- 注意事項 -->
+    <section class="product-notice">
+      <h3 class="mb-3">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        好食提醒
+      </h3>
+      <div class="container-lg">
+        <div class="row gy-2">
+          <!-- 現點現做 -->
+          <div class="col-6 col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="notice-icon">
+                  <i class="bi bi-clock-fill"></i>
+                  <p>現點現做</p>
+                </div>
+                <p>為提供優質的餐點，<strong>一律現點現做</strong>，請您耐心等候!</p>
+              </div>
+            </div>
+          </div>
+          <!-- 舒適服務 -->
+          <div class="col-6 col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="notice-icon">
+                  <i class="bi bi-emoji-smile-fill"></i>
+                  <p>舒適服務</p>
+                </div>
+                <p>本店採半自助式，如同在家用餐的感覺，<strong>免收服務費</strong></p>
+              </div>
+            </div>
+          </div>
+          <!-- 安心食用 -->
+          <div class="col-6 col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="notice-icon">
+                  <i class="bi bi-heart-fill"></i>
+                  <p>安心食用</p>
+                </div>
+                <p>本店食材<strong>產地皆為台灣</strong>，100%安心食用</p>
+              </div>
+            </div>
+          </div>
+          <!-- 好喝必知 -->
+          <div class="col-6 col-md-3" v-if="product.category==='好喝'">
+            <div class="card">
+              <div class="card-body">
+                <div class="notice-icon">
+                  <i class="bi bi-cup-fill"></i>
+                  <p>好喝必知</p>
+                </div>
+                <p>咖啡飲品<strong>為特製咖啡豆</strong>，拿鐵飲品<strong>牛奶使用光泉牛奶</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- 好食推薦 -->
     <section class="product-recommand">
       <h3 class="mb-3">
@@ -81,23 +140,8 @@
         好食推薦
       </h3>
       <div class="container-lg">
-        <div class="row">
-          <!-- 好食推薦清單 -->
-          <ProductsCardSwiper :limitCount="999" :filterProduct="recProduct" />
-        </div>
-      </div>
-    </section>
-    <!-- 猜你喜歡 -->
-    <section class="product-recommand">
-      <h3 class="mb-3">
-        <i class="bi bi-heart-fill"></i>
-        猜你喜歡
-      </h3>
-      <div class="container-lg">
-        <div class="row">
-          <!-- 猜你喜歡清單 -->
-          <ProductsCardSwiper :limitCount="6" :isRandom="true" :filterProduct="recProduct" />
-        </div>
+        <!-- 好食推薦清單 -->
+        <ProductsCardSwiper :limitCount="999" :filterProduct="recProduct" />
       </div>
     </section>
   </div>
@@ -144,7 +188,6 @@ export default {
     $route() {
       // 取得產品ID
       this.productId = this.$route.params.productId;
-      // console.log(this.productId);
       if (this.productId !== undefined) {
         this.getProduct();
       }
@@ -183,7 +226,6 @@ export default {
               name: this.product.title,
               category: this.product.category,
             };
-            // console.log(this.product);
           } else {
             // 查無產品時，導向404
             this.$router.push('/product');
@@ -197,7 +239,6 @@ export default {
     },
     // 加入至購物車 (訂餐清單)
     addCart() {
-      // console.log(this.product.id);
       this.loadingStatus.loadingItem = this.product.id;
       const cartItem = {
         product_id: this.product.id,
@@ -242,7 +283,6 @@ export default {
     this.productId = this.$route.params.productId;
     // 載入單一產品
     this.getProduct();
-    // console.log(this.$route);
   },
 };
 </script>

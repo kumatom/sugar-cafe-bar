@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid order-container" v-if="cart.carts">
+  <div class="container-lg order-container" v-if="cart.carts">
     <div class="card h-100">
       <div class="card-header">
         <ul class="nav nav-pills nav-justified">
@@ -33,12 +33,12 @@
         </ul>
       </div>
       <div class="card-body ">
-        <div class="pt-5 pb-7">
-          <div class="container-fluid">
+        <div class="pt-3">
+          <div class="container-lg">
             <div class="row justify-content-center flex-md-row flex-column-reverse">
               <!-- Step 1 : 填寫訂餐資訊 -->
               <div class="col-md-6 col-lg-7" v-if="stepStatus.createOrder">
-                <div class="my-3">
+                <div class="my-1">
                   <Form v-slot="{ errors }" class="row gx-3" @submit="onSubmit">
                     <h3 class="mb-4">訂餐資訊</h3>
                     <div class="mb-3 col-12 col-sm-6">
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="mb-3 col-6">
-                      <label for="姓名" class="form-label">
+                      <label for="name" class="form-label">
                         姓名
                         <span class="text-danger">*</span>
                       </label>
@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="mb-3 col-6">
-                      <label for="付款方式" class="form-label">
+                      <label for="payment" class="form-label">
                         付款方式
                         <span class="text-danger">*</span>
                       </label>
@@ -132,7 +132,38 @@
                       ></Field>
                       <ErrorMessage name="message" class="invalid-feedback"></ErrorMessage>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 col-lg-8 mt-4 mb-4">
+                      <span>
+                        <i class="bi bi-arrow-right-circle-fill"></i>
+                        周年慶期間消費輸入「SUGAR85」可享全單85折優惠 !
+                      </span>
+                      <Form v-slot="{ errors }" @submit="onDiscount">
+                        <div class="input-group mb-3">
+                          <Field
+                            id="coupon"
+                            name="優惠券"
+                            type="text"
+                            class="form-control"
+                            :class="{ 'is-invalid': errors['優惠券'] }"
+                            :disabled="loadingStatus.loadingItem === 'coupon'"
+                            placeholder="請輸入優惠碼"
+                            v-model="discountCode"
+                          ></Field>
+                          <button
+                            class="btn btn-light"
+                            type="submit"
+                            id="button-coupon"
+                            :disabled="!discountCode"
+                          >
+                            <span v-if="cart?.carts[0]?.coupon">
+                              已套用優惠券 <i class="bi bi-check-circle-fill text-dark"></i>
+                            </span>
+                            <span v-else>套用優惠券</span>
+                          </button>
+                        </div>
+                      </Form>
+                    </div>
+                    <div class="col-12 bottom-0">
                       <div class="float-start">
                         <router-link to="/menu">
                           <button type="button" class="btn btn-secondary btn-lg">
@@ -158,37 +189,6 @@
                           <i class="bi bi-arrow-right"></i>
                         </button>
                       </div>
-                    </div>
-                  </Form>
-                </div>
-                <div class="col-12 col-sm-8 mt-4">
-                  <span>
-                    <i class="bi bi-arrow-right-circle-fill"></i>
-                    周年慶期間消費輸入「SUGAR85」可享全單85折優惠 !
-                  </span>
-                  <Form v-slot="{ errors }" @submit="onDiscount">
-                    <div class="input-group mb-3">
-                      <Field
-                        id="coupon"
-                        name="優惠券"
-                        type="text"
-                        class="form-control"
-                        :class="{ 'is-invalid': errors['優惠券'] }"
-                        :disabled="loadingStatus.loadingItem === 'coupon'"
-                        placeholder="請輸入優惠碼"
-                        v-model="discountCode"
-                      ></Field>
-                      <button
-                        class="btn btn-light"
-                        type="submit"
-                        id="button-coupon"
-                        :disabled="!discountCode"
-                      >
-                        <span v-if="cart?.carts[0]?.coupon">
-                          已套用優惠券 <i class="bi bi-check-circle-fill text-dark"></i>
-                        </span>
-                        <span v-else>套用優惠券</span>
-                      </button>
                     </div>
                   </Form>
                 </div>
@@ -427,8 +427,10 @@ export default {
               this.$httpMessageState(this.tips, '建立訂單');
               this.$router.push('/');
             } else if (isFirst) {
-              // 再次套用優惠券
-              this.getDisCount(this.cart?.carts[0]?.coupon.code);
+              // 再次套用優惠券 (確認是否有套用)
+              if (this.cart?.carts[0]?.coupon) {
+                this.getDisCount(this.cart?.carts[0]?.coupon.code);
+              }
               isFirst = false;
             }
           } else {

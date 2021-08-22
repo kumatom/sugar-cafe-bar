@@ -26,7 +26,7 @@ export default {
       alertMsg: '驗證中，請稍後...',
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     checkLogin() {
       const api = `${process.env.VUE_APP_API}/api/user/check`;

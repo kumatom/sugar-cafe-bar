@@ -76,7 +76,7 @@ export default {
       currentPage: 1,
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   components: {
     Pagination,
     DelModal,

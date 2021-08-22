@@ -7,7 +7,7 @@
           class="navbar-brand position-absolute scb-logo"
           style="left: 50%; transform: translate(-50%, -50%); top: 50%;"
         >
-          <img src="@/assets/images/logo-scb.png" alt="" width="45" class="me-3" />
+          <img src="@/assets/images/logo-scb.png" alt="sugarCafeBar-LOGO" width="45" class="me-3" />
           <span class="scb-nav-title text-secondary">Sugar Cafe' Bar</span>
         </router-link>
         <button
@@ -151,7 +151,11 @@
                     @click.prevent="viewProductDetail(cart.product_id)"
                     data-bs-dismiss="offcanvas"
                   >
-                    <img class="img-fluid" :src="cart.product.imageUrl" />
+                    <img
+                      class="img-fluid px-2"
+                      :src="cart.product.imageUrl"
+                      alt="cart.product.imageUrl"
+                    />
                   </a>
                 </div>
                 <div class="col-8">
@@ -279,8 +283,8 @@
       </nav>
     </div>
   </div>
+
   <div class="bg-primary banner-area">
-    <div class="position-absolute scb-nav"></div>
     <div class="container d-flex flex-column banner">
       <div class="row justify-content-center my-auto banner-text">
         <div class="col-12 text-center">
@@ -311,9 +315,14 @@
       </div>
     </div>
   </div>
+
+  <!-- 底圖 -->
+  <div class="scb-nav"></div>
+
   <!-- 懸浮購物車按鈕 -->
   <div class="floating-cart-btn d-md-none">
     <a
+      href="#"
       id="floating-cart-btn"
       class="d-block cart-btn"
       data-bs-toggle="offcanvas"
@@ -372,7 +381,6 @@ export default {
   watch: {
     // 監聽 route 參數變化 (換頁)
     $route() {
-      // console.log(this.$route);
       this.chagePage();
     },
   },
@@ -401,7 +409,6 @@ export default {
     updateCart(cart, qty) {
       this.loadingStatus.loadingItem = cart.id;
       const computeQty = cart.qty + qty;
-      // console.log(computeQty);
       if (computeQty >= 1) {
         const cartItem = {
           product_id: cart.product.id,
@@ -411,7 +418,6 @@ export default {
         this.$http
           .put(api, { data: cartItem })
           .then((res) => {
-            // console.log(res);
             if (res.data.success) {
               // ...
             } else {

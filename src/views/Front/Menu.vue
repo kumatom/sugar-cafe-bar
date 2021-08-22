@@ -12,8 +12,9 @@
           <!-- 一般選單 -->
           <div class="menu-fun-bar-item">
             <a
+              href="#"
               :class="{ active: currentCategory === category.id }"
-              @click="changeCategory(category.id)"
+              @click.prevent="changeCategory(category.id)"
             >
               <h3>
                 <i :class="category.icon"></i>
@@ -36,7 +37,7 @@
           </div>
           <button
             type="button"
-            class="btn btn-primary btm-md float-end"
+            class="btn btn-primary btn-lg float-end"
             data-bs-toggle="offcanvas"
             data-bs-target="#smallMenuCategory"
             aria-controls="smallMenuCategory"
@@ -64,8 +65,9 @@
                 <div class="col-6" v-for="category in categoryList" :key="category.id">
                   <div class="menu-fun-bar-item">
                     <a
+                      href="#"
                       :class="{ active: currentCategory === category.id }"
-                      @click="changeCategory(category.id)"
+                      @click.prevent="changeCategory(category.id)"
                       data-bs-dismiss="offcanvas"
                     >
                       <h3>
@@ -94,7 +96,7 @@
         <!-- 產品清單 -->
         <div
           v-for="product in filterProducts"
-          class="col-12 col-sm-6 col-md-4 col-lg-3"
+          class="col-12 col-sm-6 col-md-4 col-xl-3"
           :key="product.id"
         >
           <ProductCard :product="product"> </ProductCard>
@@ -208,7 +210,6 @@ export default {
           }
         })
         .catch(() => {
-          // console.dir(err);
           this.$httpMessageState(this.tips, '菜單取得');
         });
     },

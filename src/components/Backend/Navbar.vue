@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
       <span class="navbar-brand">
-        <img src="https://i.imgur.com/kUYxttR.png" alt="" width="45" class="me-3">
+        <img src="@/assets/images/logo-scb.png" alt="sugarCafeBar-LOGO" width="45" class="me-3">
         <span>Sugar Cafe Bar 後台管理</span>
       </span>
       <button
@@ -44,9 +44,15 @@ export default {
   data() {
     return {
       currentPage: '',
+      tips: {
+        data: {
+          success: false,
+          message: '登出失敗，請重新登出!',
+        },
+      },
     };
   },
-  inject: ['emitter', '$httpMessageState'],
+  inject: ['$httpMessageState'],
   methods: {
     signOut() {
       const api = `${process.env.VUE_APP_API}/logout`;
@@ -62,9 +68,8 @@ export default {
             this.$httpMessageState(res, '登出');
           }
         })
-        .catch((err) => {
-          const errMsg = err.response.data.message;
-          console.log(errMsg);
+        .catch(() => {
+          this.$httpMessageState(this.tips, '登出');
         });
     },
   },

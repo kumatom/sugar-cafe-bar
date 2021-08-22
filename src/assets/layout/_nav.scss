@@ -10,6 +10,12 @@
   background-size: cover;
   opacity: 0.1;
   min-height: 100vh;
+  position: sticky;
+  margin-bottom: -100vh;
+  @include media-breakpoint-down(md) {
+    position: fixed;
+    margin-bottom: 0;
+  }
 }
 
 .scb-nav-title {
@@ -208,7 +214,7 @@
     .card {
       min-height: 150px;
       .card-body {
-        padding: 1rem 0.75rem;
+        padding: 1rem 0.5rem;
       }
       .card-title {
         font-size: 1.2rem;
