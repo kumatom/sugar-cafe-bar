@@ -214,10 +214,13 @@
     .card {
       min-height: 150px;
       .card-body {
-        padding: 1rem 0.5rem;
+        padding: 1rem 1rem;
       }
       .card-title {
         font-size: 1.2rem;
+      }
+      img {
+        padding-left: 1rem;
       }
     }
     .cart-none-content {

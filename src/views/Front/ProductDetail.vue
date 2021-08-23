@@ -7,7 +7,7 @@
         <img :src="product.imageUrl" class="img-fluid rounded" width="500" :alt="product.title" />
       </div>
       <div class="col-md-6 productDetailInfo">
-        <span class="badge rounded-pill bg-secondary h5">{{ product.category }}</span>
+        <span class="badge rounded-pill bg-secondary mb-2">{{ product.category }}</span>
         <h2>{{ product.title }}</h2>
         <p class="h5 mb-0 text-muted text-end">
           <del>NT$ {{ $filters.currency(product.origin_price) }} / {{ product.unit }} </del>

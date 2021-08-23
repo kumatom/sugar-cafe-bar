@@ -142,7 +142,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 // @import '@/assets/all';
 label {
   color: #524538;

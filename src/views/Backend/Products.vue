@@ -98,6 +98,12 @@ export default {
         delModal: '',
       },
       currentPage: 1,
+      tips: {
+        data: {
+          success: false,
+          message: '',
+        },
+      },
     };
   },
   components: {
@@ -110,6 +116,15 @@ export default {
     // 更改Loading狀態
     chageLoadingStatus(status) {
       this.isLoading = status;
+    },
+    // 設定通知訊息
+    setTips(status, message) {
+      this.tips = {
+        data: {
+          success: status,
+          message,
+        },
+      };
     },
     // 取得產品列表
     getProducts(page = 1) {
@@ -128,7 +143,8 @@ export default {
           }
         })
         .catch(() => {
-          // console.dir(err);
+          this.setTips(false, '糟糕，無法取得產品列表哦!');
+          this.$httpMessageState(this.tips, '產品列表');
         });
     },
     // 開啟產品Modal
@@ -170,7 +186,8 @@ export default {
           }
         })
         .catch(() => {
-          // console.dir(err);
+          this.setTips(false, `糟糕，無法${status}哦!`);
+          this.$httpMessageState(this.tips, status);
         });
     },
     openDelProductModal(item) {
@@ -196,7 +213,8 @@ export default {
           }
         })
         .catch(() => {
-          // console.dir(err);
+          this.setTips(false, '糟糕，無法刪除此產品哦!');
+          this.$httpMessageState(this.tips, '刪除產品');
         });
     },
   },

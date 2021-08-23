@@ -14,7 +14,7 @@ npm run build
 
 git init
 git add -A
-git commit -m '[第四版] SugarCafeBar - 產品卡片、產品詳細資訊(好食提醒)、部分UX調整'
+git commit -m '[第四版] SugarCafeBar - 最終提交調整'
 
 # 部署到 https://<USERNAME>.github.io
 git push -f https://github.com/kumatom/sugar-cafe-bar.git master

@@ -152,9 +152,9 @@
                     data-bs-dismiss="offcanvas"
                   >
                     <img
-                      class="img-fluid px-2"
+                      class="img-fluid"
                       :src="cart.product.imageUrl"
-                      alt="cart.product.imageUrl"
+                      :alt="cart.product.imageUrl"
                     />
                   </a>
                 </div>
