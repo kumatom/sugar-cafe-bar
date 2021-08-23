@@ -80,7 +80,7 @@ export default {
           slidesPerView: 3,
           spaceBetween: 20,
         },
-        512: {
+        480: {
           slidesPerView: 2,
           spaceBetween: 10,
         },
