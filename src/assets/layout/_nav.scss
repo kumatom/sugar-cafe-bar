@@ -12,7 +12,7 @@
   min-height: 100vh;
   position: sticky;
   margin-bottom: -100vh;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(sm) {
     position: fixed;
     margin-bottom: 0;
   }
