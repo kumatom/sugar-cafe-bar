@@ -81,7 +81,7 @@
         好食提醒
       </h3>
       <div class="container-lg">
-        <div class="row gy-2">
+        <div class="row">
           <!-- 現點現做 -->
           <div class="col-6 col-md-3">
             <div class="card">

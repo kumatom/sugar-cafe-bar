@@ -142,7 +142,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 // @import '@/assets/all';
 label {
   color: #524538;
@@ -169,9 +169,6 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  // background-image: url('https://i.imgur.com/bXfHBA4.jpg');
-  // background-position: 50%;
-  // background-size: cover;
   background: #524538;
 }
 </style>

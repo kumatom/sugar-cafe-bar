@@ -18,7 +18,7 @@
     color: $bg-opacity-color-2;
   }
   img {
-    height: 240px !important;
+    height: 220px !important;
     width: 100%;
     transform: scale(1, 1);
     transition: all 0.5s ease-out;
@@ -67,9 +67,9 @@
   button {
     z-index: 999;
   }
-  @media (max-width:992px) and (min-width:480px) {
+  @include media-breakpoint-down(md) {
     img {
-      height: 220px!important;
+      height: auto!important;
     }
     .card-body {
       padding: 0.75rem;
@@ -84,6 +84,9 @@
   單一產品資訊
 */
 .productDetail-container {
+  section {
+    margin-top: 3rem;
+  }
   h3 {
     letter-spacing: 0.25rem;
   }
@@ -116,10 +119,6 @@
       }
     }
   }
-  .product-recommand {
-    margin-top: 3rem;
-  }
-
   .product-notice {
     .card {
       background: transparent;
@@ -134,7 +133,7 @@
       align-items: center;
       justify-content: center;
       font-size: 5rem;
-      padding: 1rem 0;
+      // padding: 1rem 0;
       color: $main-color-2;
       p {
         font-size: 1.75rem;
@@ -147,7 +146,7 @@
     p {
       color: $main-color-2;
       text-align: center;
-      font-size: 1.25rem;
+      font-size: 1rem;
       letter-spacing: 0.25rem;
     }
   }

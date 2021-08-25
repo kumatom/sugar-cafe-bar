@@ -2,7 +2,7 @@
   <div class="card product-card">
     <div class="product-card-touch" @click="viewProductDetail(product.id)">
       <div class="product-img">
-        <img class="img-fluid" :src="product.imageUrl" height="220" :alt="product.imageUrl" />
+        <img class="img-fluid card-img-top" :src="product.imageUrl" :alt="product.imageUrl" />
         <div class="mask">
           <a href="#" @click.prevent="viewProductDetail(product.id)">
             詳細資訊

@@ -269,8 +269,8 @@
               </div>
 
               <!-- 訂餐明細 -->
-              <div class="col-md-6 col-lg-5 order-detail">
-                <div class="border p-4 mb-4 bg-light">
+              <div class="col-md-6 col-lg-5">
+                <div class="border p-4 mb-4 bg-light order-detail">
                   <h4 class="mb-4">訂餐明細</h4>
 
                   <div class="d-flex mb-3" v-for="cart in cart.carts" :key="cart.id">

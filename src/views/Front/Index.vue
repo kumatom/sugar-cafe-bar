@@ -209,13 +209,13 @@ export default {
       },
       messageList: [
         {
-          imageUrl: 'https://i.imgur.com/RqJZAK5.jpg',
+          imageUrl: './images/msg-1.jpg',
         },
         {
-          imageUrl: 'https://i.imgur.com/PbFDA2S.jpg',
+          imageUrl: './images/msg-2.jpg',
         },
         {
-          imageUrl: 'https://i.imgur.com/xpb12kV.jpg',
+          imageUrl: './images/msg-3.jpg',
         },
       ],
       tips: {
