@@ -14,7 +14,7 @@ npm run build
 
 git init
 git add -A
-git commit -m '[第四版] SugarCafeBar - 圖片路徑調整、產品圖片縮放調整、結帳畫面'
+git commit -m '[第四版] SugarCafeBar - Login.vue style註解移除'
 
 # 部署到 https://<USERNAME>.github.io
 git push -f https://github.com/kumatom/sugar-cafe-bar.git master

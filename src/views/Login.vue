@@ -143,7 +143,6 @@ export default {
 </script>
 
 <style lang="scss">
-// @import '@/assets/all';
 label {
   color: #524538;
 }
@@ -157,7 +156,6 @@ label {
 
 .card-signin {
   opacity: 0.9;
-  // background-color: #6d8c6f;
 }
 
 .Login-body-center {
